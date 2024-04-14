@@ -1,1 +1,2 @@
-<p>background-image works!</p>
+<img #image [ngSrc]="src" width="1920" height="1080" />
+<div [ngStyle]="{ backgroundImage: 'url(' + src + ')' }" [class.loaded]="!isLoading"></div>
