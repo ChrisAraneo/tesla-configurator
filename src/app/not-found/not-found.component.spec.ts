@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { NotFoundComponent } from './not-found.component';
 
 describe('NotFoundComponent', () => {
@@ -8,6 +9,12 @@ describe('NotFoundComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [NotFoundComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NotFoundComponent);
@@ -20,9 +27,8 @@ describe('NotFoundComponent', () => {
   });
 
   it('should render text', () => {
-    const fixture = TestBed.createComponent(NotFoundComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('404 Not found');
+    expect(fixture.debugElement.nativeElement.querySelector('h1')?.textContent).toContain(
+      '404 Not found',
+    );
   });
 });
