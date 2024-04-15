@@ -12,6 +12,7 @@ describe('BackgroundImageComponent', () => {
 
     fixture = TestBed.createComponent(BackgroundImageComponent);
     component = fixture.componentInstance;
+    component.src = 'assets/example.jpg';
     fixture.detectChanges();
   });
 
