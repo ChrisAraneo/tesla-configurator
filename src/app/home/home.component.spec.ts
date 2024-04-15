@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
@@ -8,6 +9,12 @@ describe('HomeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HomeComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
@@ -20,9 +27,8 @@ describe('HomeComponent', () => {
   });
 
   it('should render title', () => {
-    const fixture = TestBed.createComponent(HomeComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Welcome');
+    expect(fixture.debugElement.nativeElement.querySelector('h1')?.textContent).toContain(
+      'Welcome',
+    );
   });
 });
