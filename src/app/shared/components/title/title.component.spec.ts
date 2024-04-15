@@ -1,21 +1,33 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TitleComponent } from './title.component';
 
-describe('TitleComponent', () => {
-  let component: TitleComponent;
-  let fixture: ComponentFixture<TitleComponent>;
+@Component({
+  standalone: true,
+  imports: [TitleComponent],
+  template: `<app-title>Example</app-title>`,
+})
+class TestHostComponent {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [TitleComponent],
+describe('TitleComponent', () => {
+  let fixture: ComponentFixture<TestHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [TitleComponent, TestHostComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TitleComponent);
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(TestHostComponent);
     fixture.detectChanges();
+  }));
+
+  it('should create host component', () => {
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should project content into the component', () => {
+    const element = fixture.debugElement.nativeElement.querySelector('h1');
+
+    expect(element.textContent).toBe('Example');
   });
 });
