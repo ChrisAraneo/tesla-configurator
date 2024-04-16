@@ -13,6 +13,8 @@ describe('PageComponent', () => {
 
     fixture = TestBed.createComponent(PageComponent);
     component = fixture.componentInstance;
+    component.backgroundImageSrc = 'assets/example.jpg';
+    component.backgroundImageAlt = 'Example';
     fixture.detectChanges();
   });
 
