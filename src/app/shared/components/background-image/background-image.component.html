@@ -1,2 +1,2 @@
-<img #image [ngSrc]="src" width="1920" height="1080" />
+<img #image [ngSrc]="src" width="1920" height="1080" alt="{{ alt }}" />
 <div [ngStyle]="{ backgroundImage: 'url(' + src + ')' }" [class.loaded]="!isLoading"></div>

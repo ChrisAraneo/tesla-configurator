@@ -10,6 +10,7 @@ import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular
 })
 export class BackgroundImageComponent implements AfterViewInit {
   @Input({ required: true }) src: string = '';
+  @Input({ required: true }) alt: string = '';
 
   @ViewChild('image') imageRef?: ElementRef;
 

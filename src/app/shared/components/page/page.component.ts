@@ -10,4 +10,5 @@ import { BackgroundImageComponent } from '../background-image/background-image.c
 })
 export class PageComponent {
   @Input({ required: true }) backgroundImageSrc: string = '';
+  @Input({ required: true }) backgroundImageAlt: string = '';
 }
