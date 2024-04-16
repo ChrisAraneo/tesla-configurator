@@ -26,8 +26,6 @@ describe('TitleComponent', () => {
   });
 
   it('should project content into the component', () => {
-    const element = fixture.debugElement.nativeElement.querySelector('h1');
-
-    expect(element.textContent).toBe('Example');
+    expect(fixture.debugElement.nativeElement.querySelector('h1')?.textContent).toBe('Example');
   });
 });
