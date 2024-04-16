@@ -1,22 +1,33 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { CardComponent } from './card.component';
 
-// TODO Test content projection
-describe('CardComponent', () => {
-  let component: CardComponent;
-  let fixture: ComponentFixture<CardComponent>;
+@Component({
+  standalone: true,
+  imports: [CardComponent],
+  template: `<app-card>Text inside card</app-card>`,
+})
+class TestHostComponent {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [CardComponent],
+describe('CardComponent', () => {
+  let fixture: ComponentFixture<TestHostComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [CardComponent, TestHostComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CardComponent);
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(TestHostComponent);
     fixture.detectChanges();
+  }));
+
+  it('should create host component', () => {
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should project content into the component', () => {
+    expect(fixture.debugElement.nativeElement.querySelector('div')?.textContent).toBe(
+      'Text inside card',
+    );
   });
 });
