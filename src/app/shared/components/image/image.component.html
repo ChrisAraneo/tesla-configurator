@@ -1,1 +1,7 @@
-<p>image works!</p>
+<img
+  #image
+  [ngSrc]="src"
+  width="{{ width }}"
+  height="{{ height }}"
+  alt="{{ alt }}"
+  [class.loaded]="!isLoading" />
