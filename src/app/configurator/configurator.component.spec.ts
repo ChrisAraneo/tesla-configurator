@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { ConfiguratorComponent } from './configurator.component';
+import { ConfiguratorService } from './configurator.service';
 
 describe('ConfiguratorComponent', () => {
   let component: ConfiguratorComponent;
@@ -10,6 +11,10 @@ describe('ConfiguratorComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ConfiguratorComponent],
       providers: [
+        {
+          provide: ConfiguratorService,
+          useValue: {},
+        },
         {
           provide: ActivatedRoute,
           useValue: {},
