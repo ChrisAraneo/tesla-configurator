@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, retry } from 'rxjs';
-import { Model } from './model.type';
+import { ModelsApiResponse } from './models-api-response.type';
 
 const MODELS_ENDPOINT: string = '/models'; // TODO Move to env/providers
 
@@ -12,7 +12,9 @@ const MODELS_ENDPOINT: string = '/models'; // TODO Move to env/providers
 export class ApiService {
   constructor(private httpClient: HttpClient) {}
 
-  getModels(): Observable<Model[]> {
-    return this.httpClient.get<Model[]>(MODELS_ENDPOINT).pipe(retry({ count: 10, delay: 250 }));
+  getModels(): Observable<ModelsApiResponse> {
+    return this.httpClient
+      .get<ModelsApiResponse>(MODELS_ENDPOINT)
+      .pipe(retry({ count: 10, delay: 250 }));
   }
 }
