@@ -1,1 +1,52 @@
-<p>model-step works!</p>
+<form *ngIf="(loading | async) === false; else loader" [formGroup]="service.form">
+  <div class="container" *ngIf="models | async as models; else error">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="input-group">
+          <label for="username">Model</label>
+          <select id="modelSelect" placeholder="Model" formControlName="model">
+            <option></option>
+            <ng-container *ngFor="let model of models">
+              <option value="{{ model.code }}">
+                {{ model.code }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="colors | async as colors">
+      <div class="row" *ngIf="colors.length">
+        <div class="col-sm-12">
+          <div class="input-group">
+            <label for="username">Color</label>
+            <select id="colorSelect" placeholder="Color" formControlName="color">
+              <option></option>
+              <ng-container *ngFor="let color of colors">
+                <option value="{{ color.code }}">
+                  {{ color.code }}
+                </option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <ng-container *ngIf="image | async as image; else imagePlaceholder">
+        <app-image [src]="image.src" [width]="1260" [height]="738" [alt]="image.alt"></app-image>
+      </ng-container>
+    </div>
+  </div>
+</form>
+<ng-template #loader>
+  <div class="spinner"></div>
+</ng-template>
+<!-- TODO Use error -->
+<ng-template #error>Error!</ng-template>
+<ng-template #imagePlaceholder>
+  <!-- TODO Fix it -->
+  <div [ngStyle]="{ width: '1260px', height: '738px' }"></div>
+</ng-template>
