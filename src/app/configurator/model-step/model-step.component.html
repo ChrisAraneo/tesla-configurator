@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="input-group">
-          <label for="username">Model</label>
+          <label for="modelSelect">Model</label>
           <select id="modelSelect" placeholder="Model" formControlName="model">
             <option></option>
             <ng-container *ngFor="let model of models">
@@ -19,7 +19,7 @@
       <div class="row" *ngIf="colors.length">
         <div class="col-sm-12">
           <div class="input-group">
-            <label for="username">Color</label>
+            <label for="colorSelect">Color</label>
             <select id="colorSelect" placeholder="Color" formControlName="color">
               <option></option>
               <ng-container *ngFor="let color of colors">
