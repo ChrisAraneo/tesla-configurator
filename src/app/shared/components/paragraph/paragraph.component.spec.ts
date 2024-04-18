@@ -28,7 +28,7 @@ describe('ParagraphComponent', () => {
   });
 
   it('should project content into the component', () => {
-    expect(fixture.debugElement.nativeElement.querySelector('p')?.textContent).toBe(
+    expect(fixture.debugElement.nativeElement.querySelector('p')?.textContent.trim()).toBe(
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     );
   });
