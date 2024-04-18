@@ -4,7 +4,8 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CardComponent } from '../shared/components/card/card.component';
 import { PageComponent } from '../shared/components/page/page.component';
-import { ConfiguratorService, DisabledSteps } from './configurator.service';
+import { ConfiguratorService } from './configurator.service';
+import { DisabledSteps } from './shared/disabled-steps.type';
 
 @Component({
   selector: 'app-configurator',

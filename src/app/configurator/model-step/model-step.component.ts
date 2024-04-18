@@ -5,12 +5,13 @@ import { Observable } from 'rxjs';
 import { ImageComponent } from '../../shared/components/image/image.component';
 import { Color } from '../../shared/services/color.type';
 import { Model } from '../../shared/services/model.type';
-import { ConfiguratorService, Image } from '../configurator.service';
+import { ConfiguratorService } from '../configurator.service';
+import { Image } from '../shared/image.type';
 
 @Component({
   selector: 'app-model-step',
   standalone: true,
-  imports: [NgIf, AsyncPipe, JsonPipe, NgFor, ReactiveFormsModule, ImageComponent, NgStyle],
+  imports: [NgIf, AsyncPipe, JsonPipe, NgFor, ReactiveFormsModule, ImageComponent, NgStyle], // TODO Remove unused imports
   templateUrl: './model-step.component.html',
   styleUrl: './model-step.component.scss',
 })

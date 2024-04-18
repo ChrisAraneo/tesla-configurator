@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ImageComponent } from '../../shared/components/image/image.component';
-import { ConfiguratorService, Image, Options } from '../configurator.service';
+import { ConfiguratorService } from '../configurator.service';
+import { Image } from '../shared/image.type';
+import { Options } from '../shared/options.type';
 
 @Component({
   selector: 'app-config-step',

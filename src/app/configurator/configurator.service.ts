@@ -7,29 +7,10 @@ import { Config } from '../shared/services/config.type';
 import { Model } from '../shared/services/model.type';
 import { ModelsApiResponse } from '../shared/services/models-api-response.type';
 import { OptionsApiResponse } from '../shared/services/options-api-response.type';
-
-type ConfiguratorForm = {
-  // TODO Move to separate file
-  model: FormControl<string | null>;
-  color: FormControl<string | null>;
-  config: FormControl<string | null>;
-  towHitch: FormControl<boolean | null>;
-  yoke: FormControl<boolean | null>;
-};
-
-// TODO Move to separate file
-export type Image = {
-  src: string;
-  alt: string;
-};
-
-export type DisabledSteps = {
-  1: boolean;
-  2: boolean;
-  3: boolean;
-};
-
-export type Options = OptionsApiResponse;
+import { ConfiguratorForm } from './shared/configurator-form.type';
+import { DisabledSteps } from './shared/disabled-steps.type';
+import { Image } from './shared/image.type';
+import { Options } from './shared/options.type';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +22,7 @@ export class ConfiguratorService implements OnDestroy {
   private _disabledSteps = new BehaviorSubject<DisabledSteps>({ 1: true, 2: true, 3: true });
 
   private _modelsData = new BehaviorSubject<ModelsApiResponse>([]);
-  private _optionsData = new BehaviorSubject<Options | null>(null);
+  private _optionsData = new BehaviorSubject<OptionsApiResponse | null>(null);
 
   private _models = new BehaviorSubject<Model[]>([]);
   private _colors = new BehaviorSubject<Color[]>([]);
@@ -155,6 +136,7 @@ export class ConfiguratorService implements OnDestroy {
   private fetchModelsData(): void {
     this.subscription.add(
       this.apiService.getModels().subscribe((response: ModelsApiResponse) => {
+        // TODO Handle errors
         this._modelsData.next(response);
       }),
     );
@@ -164,7 +146,7 @@ export class ConfiguratorService implements OnDestroy {
     if (!modelCode) {
       return of(null);
     } else {
-      return this.apiService.getOptions(modelCode);
+      return this.apiService.getOptions(modelCode); // TODO Handle errors
     }
   }
 
