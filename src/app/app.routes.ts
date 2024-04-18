@@ -16,11 +16,9 @@ export const routes: Routes = [
     component: HomeComponent,
   },
   {
-    // TODO Guards
     path: 'configurator',
     component: ConfiguratorComponent,
     children: [
-      // TODO Guards
       {
         path: '1',
         title: 'Tesla Configurator - Step 1 - Choose model & color',
