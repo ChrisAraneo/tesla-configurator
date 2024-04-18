@@ -1,8 +1,43 @@
 img {
+  border-radius: 6px;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 
   &.loaded {
     opacity: 1;
   }
+}
+
+@keyframes loading {
+  to {
+    background-position:
+      315px 0,
+      0 0,
+      0 190px,
+      50px 195px;
+  }
+}
+
+@keyframes color {
+  0% {
+    background: #333;
+  }
+  50% {
+    background: #555;
+  }
+  100% {
+    background: #333;
+  }
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+}
+
+.skeleton:not(.loaded) {
+  border-radius: 6px;
+  animation: color 1.5s infinite linear;
 }
