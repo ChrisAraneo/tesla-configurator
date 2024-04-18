@@ -1,1 +1,28 @@
-<p>summary-step works!</p>
+<app-title>Step 3: Summary</app-title>
+<div>
+  <h2 *ngIf="model | async as model">{{ model.description }}</h2>
+</div>
+<div *ngIf="config | async as config">
+  <h3>{{ config.description }}</h3>
+  <span>Range: {{ config.range }}</span>
+  <span>Max speed: {{ config.speed }}</span>
+  <span>{{ config.price }}</span>
+</div>
+<div *ngIf="color | async as color">
+  <h3>{{ color.description }}</h3>
+  <span>{{ color.price }}</span>
+</div>
+<div *ngIf="towHitch | async">
+  <h3>Tow Hitch Package</h3>
+  <span>{{ 1000 }}</span>
+</div>
+<div *ngIf="yoke | async">
+  <h3>Yoke steering wheel</h3>
+  <!-- TODO Update rule on additional price -->
+  <span>{{ 1000 }}</span>
+</div>
+<div>
+  <h3>Total cost</h3>
+  <span>{{ total | async }}</span>
+</div>
+<!-- TODO Add image here -->
