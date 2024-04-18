@@ -46,3 +46,11 @@
     </div>
   </div>
 </div>
+
+<ng-container *ngIf="error | async as error">
+  <app-error-toast
+    title="Error"
+    [message]="error.message || ''"
+    button="Reload"
+    [onClick]="reload"></app-error-toast>
+</ng-container>

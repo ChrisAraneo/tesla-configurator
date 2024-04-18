@@ -6,6 +6,7 @@ import { ErrorToastComponent } from '../../shared/components/error-toast/error-t
 import { ImageComponent } from '../../shared/components/image/image.component';
 import { TitleComponent } from '../../shared/components/title/title.component';
 import { ConfiguratorService } from '../configurator.service';
+import { Error } from '../shared/error.type';
 import { Image } from '../shared/image.type';
 import { Options } from '../shared/options.type';
 
@@ -26,6 +27,8 @@ import { Options } from '../shared/options.type';
 })
 export class ConfigStepComponent implements OnInit {
   loading!: Observable<boolean>;
+  error!: Observable<Error>;
+
   options!: Observable<Options | null>;
   range!: Observable<number | null>;
   maxSpeed!: Observable<number | null>;
@@ -38,6 +41,7 @@ export class ConfigStepComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = this.service.loading;
+    this.error = this.service.error;
     this.options = this.service.options;
     this.range = this.service.range;
     this.maxSpeed = this.service.maxSpeed;
@@ -46,4 +50,8 @@ export class ConfigStepComponent implements OnInit {
     this.yoke = this.service.yoke;
     this.image = this.service.image;
   }
+
+  reload: () => void = () => {
+    this.service.reload();
+  };
 }

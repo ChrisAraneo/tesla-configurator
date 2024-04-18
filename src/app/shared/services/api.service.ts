@@ -10,7 +10,6 @@ import { Status } from './types/status.type';
 const MODELS_ENDPOINT: string = '/models'; // TODO Move to env/providers
 const OPTIONS_ENDPOINT: string = '/options'; // TODO Move to env/providers
 
-// TODO Map to success or error
 @Injectable({
   providedIn: 'root',
 })

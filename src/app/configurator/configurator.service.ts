@@ -1,11 +1,14 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   BehaviorSubject,
   Observable,
+  Subject,
   Subscription,
   catchError,
   filter,
+  first,
   map,
   mergeMap,
   of,
@@ -22,6 +25,7 @@ import { OptionsApiResponse } from '../shared/services/types/options-api-respons
 import { Status } from '../shared/services/types/status.type';
 import { ConfiguratorForm } from './shared/configurator-form.type';
 import { DisabledSteps } from './shared/disabled-steps.type';
+import { Error } from './shared/error.type';
 import { Image } from './shared/image.type';
 import { Options } from './shared/options.type';
 
@@ -32,6 +36,7 @@ export class ConfiguratorService implements OnDestroy {
   private _form!: FormGroup<ConfiguratorForm>;
 
   private _loading = new BehaviorSubject<boolean>(true);
+  private _error = new Subject<Error>();
   private _disabledSteps = new BehaviorSubject<DisabledSteps>({ 1: true, 2: true, 3: true });
 
   private _modelsData = new BehaviorSubject<ModelsApiData>([]);
@@ -55,9 +60,12 @@ export class ConfiguratorService implements OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private apiService: ApiService,
+    private router: Router,
   ) {
     this.initializeForm();
+
     this.fetchModelsData();
+
     this.subscribeToDataChanges();
     this.subscribeToModelControlValueChanges();
     this.subscribeToColorControlValueChanges();
@@ -71,6 +79,10 @@ export class ConfiguratorService implements OnDestroy {
 
   get loading(): Observable<boolean> {
     return this._loading.asObservable();
+  }
+
+  get error(): Observable<Error> {
+    return this._error.asObservable();
   }
 
   get disabledSteps(): Observable<DisabledSteps> {
@@ -135,6 +147,24 @@ export class ConfiguratorService implements OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  reload(): void {
+    this.fetchModelsData();
+
+    this.subscription.add(
+      this._modelsData.pipe(first()).subscribe(() => {
+        this.form.setValue({
+          model: null,
+          color: null,
+          config: null,
+          towHitch: null,
+          yoke: null,
+        });
+
+        this.router.navigateByUrl('');
+      }),
+    );
+  }
+
   private initializeForm(): void {
     this._form = this.formBuilder.group({
       model: new FormControl<string | null>(null),
@@ -150,6 +180,7 @@ export class ConfiguratorService implements OnDestroy {
       this.apiService
         .getModels()
         .pipe(
+          first(),
           catchError(() => {
             return of({
               status: Status.Error,
@@ -159,10 +190,14 @@ export class ConfiguratorService implements OnDestroy {
           }),
         )
         .subscribe((response: ModelsApiResponse) => {
+          this._loading.next(false);
+
           if (response.status === Status.Success && response.data !== null) {
             this._modelsData.next(response.data);
           } else {
-            // TODO Error
+            this._error.next({
+              message: response.message,
+            });
           }
         }),
     );
@@ -173,6 +208,7 @@ export class ConfiguratorService implements OnDestroy {
       return of(null);
     } else {
       return this.apiService.getOptions(modelCode).pipe(
+        first(),
         catchError(() => {
           return of({
             status: Status.Error,
@@ -181,11 +217,14 @@ export class ConfiguratorService implements OnDestroy {
           });
         }),
         map((response: OptionsApiResponse) => {
+          this._loading.next(false);
+
           if (response.status === Status.Success) {
             return response.data;
           } else {
-            // TODO Error
-            throw Error('TODO');
+            this._error.next({ message: response.message });
+
+            return null;
           }
         }),
       );
@@ -195,10 +234,6 @@ export class ConfiguratorService implements OnDestroy {
   private subscribeToDataChanges(): void {
     this.subscription.add(
       this._modelsData.asObservable().subscribe((data: ModelsApiData) => {
-        if (this._loading.getValue()) {
-          this._loading.next(false);
-        }
-
         this._models.next(data.map((item) => ({ code: item.code, description: item.description })));
       }),
     );

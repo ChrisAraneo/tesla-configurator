@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { TitleComponent } from '../../shared/components/title/title.component';
 import { Color } from '../../shared/services/types/color.type';
 import { Model } from '../../shared/services/types/model.type';
 import { ConfiguratorService } from '../configurator.service';
+import { Error } from '../shared/error.type';
 import { Image } from '../shared/image.type';
 
 @Component({
@@ -19,27 +20,31 @@ import { Image } from '../shared/image.type';
     NgFor,
     ReactiveFormsModule,
     ImageComponent,
-    NgStyle,
     ErrorToastComponent,
     TitleComponent,
-  ], // TODO Remove unused imports
+  ],
   templateUrl: './model-step.component.html',
   styleUrl: './model-step.component.scss',
 })
 export class ModelStepComponent implements OnInit {
   loading!: Observable<boolean>;
+  error!: Observable<Error>;
+
   models!: Observable<Model[]>;
   colors!: Observable<Color[]>;
   image!: Observable<Image | null>;
 
-  constructor(readonly service: ConfiguratorService) {
-    // TODO Resolver
-  }
+  constructor(readonly service: ConfiguratorService) {}
 
   ngOnInit(): void {
     this.loading = this.service.loading;
+    this.error = this.service.error;
     this.models = this.service.models;
     this.colors = this.service.colors;
     this.image = this.service.image;
   }
+
+  reload: () => void = () => {
+    this.service.reload();
+  };
 }

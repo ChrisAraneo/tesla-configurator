@@ -1,5 +1,5 @@
 <form *ngIf="(loading | async) === false; else loader" [formGroup]="service.form">
-  <div class="container" *ngIf="options | async as options; else error">
+  <div class="container" *ngIf="options | async as options">
     <div class="row">
       <div class="col-sm-12">
         <app-title>Step 2: Select your config and options</app-title>
@@ -63,14 +63,15 @@
     </div>
   </div>
 </form>
-<ng-template #loader>
-  <div class="spinner"></div>
-</ng-template>
-<!-- TODO Use error -->
-<ng-template #error>
+
+<ng-container *ngIf="error | async as error">
   <app-error-toast
     title="Error"
-    message="Something went wrong"
-    button="Reload page"
-    [onClick]=""></app-error-toast>
+    [message]="error.message || ''"
+    button="Reload"
+    [onClick]="reload"></app-error-toast>
+</ng-container>
+
+<ng-template #loader>
+  <div class="spinner"></div>
 </ng-template>
