@@ -1,9 +1,10 @@
-import { AsyncPipe, JsonPipe, NgFor, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ErrorToastComponent } from '../../shared/components/error-toast/error-toast.component';
 import { ImageComponent } from '../../shared/components/image/image.component';
+import { TitleComponent } from '../../shared/components/title/title.component';
 import { Color } from '../../shared/services/types/color.type';
 import { Model } from '../../shared/services/types/model.type';
 import { ConfiguratorService } from '../configurator.service';
@@ -15,12 +16,12 @@ import { Image } from '../shared/image.type';
   imports: [
     NgIf,
     AsyncPipe,
-    JsonPipe,
     NgFor,
     ReactiveFormsModule,
     ImageComponent,
     NgStyle,
     ErrorToastComponent,
+    TitleComponent,
   ], // TODO Remove unused imports
   templateUrl: './model-step.component.html',
   styleUrl: './model-step.component.scss',

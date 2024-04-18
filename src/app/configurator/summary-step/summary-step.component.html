@@ -1,28 +1,48 @@
-<app-title>Step 3: Summary</app-title>
-<div>
-  <h2 *ngIf="model | async as model">{{ model.description }}</h2>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <app-title>Step 3: Summary</app-title>
+    </div>
+  </div>
+  <!-- TODO Finish component template structure -->
+  <div>
+    <h2 *ngIf="model | async as model">{{ model.description }}</h2>
+  </div>
+  <div *ngIf="config | async as config">
+    <h3>{{ config.description }}</h3>
+    <span>Range: {{ config.range }}</span>
+    <span>Max speed: {{ config.speed }}</span>
+    <span>{{ config.price }}</span>
+  </div>
+  <div *ngIf="color | async as color">
+    <h3>{{ color.description }}</h3>
+    <span>{{ color.price }}</span>
+  </div>
+  <div *ngIf="towHitch | async">
+    <h3>Tow Hitch Package</h3>
+    <span>{{ 1000 }}</span>
+  </div>
+  <div *ngIf="yoke | async">
+    <h3>Yoke steering wheel</h3>
+    <!-- TODO Update rule on additional price -->
+    <span>{{ 1000 }}</span>
+  </div>
+  <div>
+    <h3>Total cost</h3>
+    <span>{{ total | async }}</span>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <!-- TODO Add skeletons or loaders -->
+      <ng-container *ngIf="image | async as image">
+        <app-image
+          [src]="image.src"
+          [width]="480"
+          [height]="320"
+          [maxWidth]="480"
+          [maxHeight]="320"
+          [alt]="image.alt"></app-image>
+      </ng-container>
+    </div>
+  </div>
 </div>
-<div *ngIf="config | async as config">
-  <h3>{{ config.description }}</h3>
-  <span>Range: {{ config.range }}</span>
-  <span>Max speed: {{ config.speed }}</span>
-  <span>{{ config.price }}</span>
-</div>
-<div *ngIf="color | async as color">
-  <h3>{{ color.description }}</h3>
-  <span>{{ color.price }}</span>
-</div>
-<div *ngIf="towHitch | async">
-  <h3>Tow Hitch Package</h3>
-  <span>{{ 1000 }}</span>
-</div>
-<div *ngIf="yoke | async">
-  <h3>Yoke steering wheel</h3>
-  <!-- TODO Update rule on additional price -->
-  <span>{{ 1000 }}</span>
-</div>
-<div>
-  <h3>Total cost</h3>
-  <span>{{ total | async }}</span>
-</div>
-<!-- TODO Add image here -->

@@ -1,16 +1,18 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest, map } from 'rxjs';
+import { ImageComponent } from '../../shared/components/image/image.component';
 import { TitleComponent } from '../../shared/components/title/title.component';
 import { Color } from '../../shared/services/types/color.type';
 import { Config } from '../../shared/services/types/config.type';
 import { Model } from '../../shared/services/types/model.type';
 import { ConfiguratorService } from '../configurator.service';
+import { Image } from '../shared/image.type';
 
 @Component({
   selector: 'app-summary-step',
   standalone: true,
-  imports: [TitleComponent, AsyncPipe, NgIf],
+  imports: [TitleComponent, AsyncPipe, NgIf, ImageComponent],
   templateUrl: './summary-step.component.html',
   styleUrl: './summary-step.component.scss',
 })
@@ -21,6 +23,7 @@ export class SummaryStepComponent implements OnInit {
   color!: Observable<Color>;
   towHitch!: Observable<boolean>;
   yoke!: Observable<boolean>;
+  image!: Observable<Image | null>;
 
   total!: Observable<number>;
 
@@ -33,6 +36,7 @@ export class SummaryStepComponent implements OnInit {
     this.color = this.service.selectedColor;
     this.towHitch = this.service.towHitch;
     this.yoke = this.service.yoke;
+    this.image = this.service.image;
 
     // TODO Move calculating total to service
     this.total = combineLatest([this.config, this.color, this.towHitch, this.yoke]).pipe(

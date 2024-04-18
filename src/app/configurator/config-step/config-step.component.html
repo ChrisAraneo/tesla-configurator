@@ -2,6 +2,11 @@
   <div class="container" *ngIf="options | async as options; else error">
     <div class="row">
       <div class="col-sm-12">
+        <app-title>Step 2: Select your config and options</app-title>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
         <div class="input-group">
           <label for="configSelect">Config</label>
           <select id="configSelect" placeholder="Config" formControlName="config">
@@ -43,19 +48,18 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <!-- TODO Add skeletons or loaders -->
-      <ng-container *ngIf="image | async as image; else imagePlaceholder">
-        <app-image
-          [src]="image.src"
-          [width]="480"
-          [height]="320"
-          [maxWidth]="480"
-          [maxHeight]="320"
-          [alt]="image.alt"></app-image>
-      </ng-container>
+    <div class="row">
+      <div class="col-sm-12">
+        <ng-container *ngIf="image | async as image">
+          <app-image
+            [src]="image.src"
+            [width]="480"
+            [height]="320"
+            [maxWidth]="480"
+            [maxHeight]="320"
+            [alt]="image.alt"></app-image>
+        </ng-container>
+      </div>
     </div>
   </div>
 </form>
@@ -69,8 +73,4 @@
     message="Something went wrong"
     button="Reload page"
     [onClick]=""></app-error-toast>
-</ng-template>
-<ng-template #imagePlaceholder>
-  <!-- TODO Fix it -->
-  <div [ngStyle]="{ width: '1260px', height: '738px' }"></div>
 </ng-template>
