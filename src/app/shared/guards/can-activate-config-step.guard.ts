@@ -8,7 +8,7 @@ export const canActivateConfigStep: CanActivateFn = () => {
   const service: ConfiguratorService = inject(ConfiguratorService);
   const router: Router = inject(Router);
 
-  return service.disabledStep.pipe(
+  return service.disabledSteps.pipe(
     map((value) => value[2]),
     first(),
     mergeMap((isDisabled: boolean): Promise<boolean> => {

@@ -28,6 +28,6 @@ export class ConfiguratorComponent implements OnInit {
   constructor(private readonly service: ConfiguratorService) {}
 
   ngOnInit(): void {
-    this.disabledSteps = this.service.disabledStep;
+    this.disabledSteps = this.service.disabledSteps;
   }
 }
