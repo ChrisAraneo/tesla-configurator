@@ -7,11 +7,12 @@ import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { canActivateConfigStep } from './shared/guards/can-activate-config-step.guard';
+import { canActivateSummaryStep } from './shared/guards/can-activate-summary-step.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    title: 'Tesla Configurator',
+    title: 'Tesla Configurator - Welcome',
     component: HomeComponent,
   },
   {
@@ -28,12 +29,13 @@ export const routes: Routes = [
       {
         path: '2',
         canActivate: [canActivateConfigStep],
-        title: 'Tesla Configurator -  Step 2 - Select config & options',
+        title: 'Tesla Configurator - Step 2 - Select config & options',
         component: ConfigStepComponent,
       },
       {
         path: '3',
-        title: 'Tesla Configurator -  Step 3 - Summary',
+        canActivate: [canActivateSummaryStep],
+        title: 'Tesla Configurator - Step 3 - Summary',
         component: SummaryStepComponent,
       },
       {
