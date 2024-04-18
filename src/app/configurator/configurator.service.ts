@@ -79,6 +79,7 @@ export class ConfiguratorService implements OnDestroy {
     return this._loading.asObservable();
   }
 
+  // TODO Rename to disabled steps
   get disabledStep(): Observable<DisabledSteps> {
     return this._disabledSteps.asObservable();
   }
