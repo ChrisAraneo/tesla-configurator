@@ -214,8 +214,7 @@ export class ConfiguratorService implements OnDestroy {
         if (colorCode === null) {
           this._color.next(null);
         } else {
-          // TODO Add type annotation
-          const model = this._modelsData
+          const model: (Model & { colors: Color[] }) | undefined = this._modelsData
             .getValue()
             .find((item) => item.code === this._model.getValue()?.code);
           const color: Color | null = model?.colors.find((item) => item.code === colorCode) || null;
