@@ -46,6 +46,7 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
+      <!-- TODO Add skeletons or loaders -->
       <ng-container *ngIf="image | async as image; else imagePlaceholder">
         <app-image [src]="image.src" [width]="1260" [height]="738" [alt]="image.alt"></app-image>
       </ng-container>
@@ -56,7 +57,13 @@
   <div class="spinner"></div>
 </ng-template>
 <!-- TODO Use error -->
-<ng-template #error>Error!</ng-template>
+<ng-template #error>
+  <app-error-toast
+    title="Error"
+    message="Something went wrong"
+    button="Reload page"
+    [onClick]=""></app-error-toast>
+</ng-template>
 <ng-template #imagePlaceholder>
   <!-- TODO Fix it -->
   <div [ngStyle]="{ width: '1260px', height: '738px' }"></div>

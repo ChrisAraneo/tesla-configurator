@@ -1,3 +1,3 @@
-import { OptionsApiResponse } from '../../shared/services/options-api-response.type';
+import { OptionsApiData } from '../../shared/services/types/options-api-data.type';
 
-export type Options = OptionsApiResponse;
+export type Options = OptionsApiData;

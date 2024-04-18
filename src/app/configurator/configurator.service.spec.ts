@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 import { ApiService } from '../shared/services/api.service';
-import { ModelsApiResponse } from '../shared/services/models-api-response.type';
+import { ModelsApiResponse } from '../shared/services/types/models-api-response.type';
+import { Status } from '../shared/services/types/status.type';
 import { ConfiguratorService } from './configurator.service';
 
 describe('ConfiguratorService', () => {
@@ -13,7 +14,11 @@ describe('ConfiguratorService', () => {
         {
           provide: ApiService,
           useValue: {
-            getModels: (): Observable<ModelsApiResponse> => of([]),
+            getModels: (): Observable<ModelsApiResponse> =>
+              of({
+                status: Status.Success,
+                data: [],
+              }),
           },
         },
       ],

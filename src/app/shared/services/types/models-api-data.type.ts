@@ -1,6 +1,6 @@
 import { Color } from './color.type';
 
-export type ModelsApiResponse = Array<{
+export type ModelsApiData = Array<{
   code: string;
   description: string;
   colors: Color[];

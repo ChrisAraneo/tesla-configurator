@@ -1,7 +1,8 @@
-import { AsyncPipe, JsonPipe, NgFor, NgIf, NgStyle } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { ErrorToastComponent } from '../../shared/components/error-toast/error-toast.component';
 import { ImageComponent } from '../../shared/components/image/image.component';
 import { ConfiguratorService } from '../configurator.service';
 import { Image } from '../shared/image.type';
@@ -10,7 +11,15 @@ import { Options } from '../shared/options.type';
 @Component({
   selector: 'app-config-step',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, AsyncPipe, ImageComponent, NgFor, NgStyle, JsonPipe],
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    AsyncPipe,
+    ImageComponent,
+    NgFor,
+    NgStyle,
+    ErrorToastComponent,
+  ],
   templateUrl: './config-step.component.html',
   styleUrl: './config-step.component.scss',
 })

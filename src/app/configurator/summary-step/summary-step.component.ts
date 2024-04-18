@@ -2,9 +2,9 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest, map } from 'rxjs';
 import { TitleComponent } from '../../shared/components/title/title.component';
-import { Color } from '../../shared/services/color.type';
-import { Config } from '../../shared/services/config.type';
-import { Model } from '../../shared/services/model.type';
+import { Color } from '../../shared/services/types/color.type';
+import { Config } from '../../shared/services/types/config.type';
+import { Model } from '../../shared/services/types/model.type';
 import { ConfiguratorService } from '../configurator.service';
 
 @Component({

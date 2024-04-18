@@ -1,6 +1,6 @@
 import { Config } from './config.type';
 
-export type OptionsApiResponse = {
+export type OptionsApiData = {
   configs: Config[];
   towHitch: boolean;
   yoke: boolean;

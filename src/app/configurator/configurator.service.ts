@@ -1,12 +1,25 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { BehaviorSubject, Observable, Subscription, filter, mergeMap, of, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subscription,
+  catchError,
+  filter,
+  map,
+  mergeMap,
+  of,
+  tap,
+} from 'rxjs';
 import { ApiService } from '../shared/services/api.service';
-import { Color } from '../shared/services/color.type';
-import { Config } from '../shared/services/config.type';
-import { Model } from '../shared/services/model.type';
-import { ModelsApiResponse } from '../shared/services/models-api-response.type';
-import { OptionsApiResponse } from '../shared/services/options-api-response.type';
+import { Color } from '../shared/services/types/color.type';
+import { Config } from '../shared/services/types/config.type';
+import { Model } from '../shared/services/types/model.type';
+import { ModelsApiData } from '../shared/services/types/models-api-data.type';
+import { ModelsApiResponse } from '../shared/services/types/models-api-response.type';
+import { OptionsApiData } from '../shared/services/types/options-api-data.type';
+import { OptionsApiResponse } from '../shared/services/types/options-api-response.type';
+import { Status } from '../shared/services/types/status.type';
 import { ConfiguratorForm } from './shared/configurator-form.type';
 import { DisabledSteps } from './shared/disabled-steps.type';
 import { Image } from './shared/image.type';
@@ -21,8 +34,8 @@ export class ConfiguratorService implements OnDestroy {
   private _loading = new BehaviorSubject<boolean>(true);
   private _disabledSteps = new BehaviorSubject<DisabledSteps>({ 1: true, 2: true, 3: true });
 
-  private _modelsData = new BehaviorSubject<ModelsApiResponse>([]);
-  private _optionsData = new BehaviorSubject<OptionsApiResponse | null>(null);
+  private _modelsData = new BehaviorSubject<ModelsApiData>([]);
+  private _optionsData = new BehaviorSubject<OptionsApiData | null>(null);
 
   private _models = new BehaviorSubject<Model[]>([]);
   private _colors = new BehaviorSubject<Color[]>([]);
@@ -135,24 +148,54 @@ export class ConfiguratorService implements OnDestroy {
 
   private fetchModelsData(): void {
     this.subscription.add(
-      this.apiService.getModels().subscribe((response: ModelsApiResponse) => {
-        // TODO Handle errors
-        this._modelsData.next(response);
-      }),
+      this.apiService
+        .getModels()
+        .pipe(
+          catchError(() => {
+            return of({
+              status: Status.Error,
+              data: null,
+              message: 'Something went wrong...',
+            });
+          }),
+        )
+        .subscribe((response: ModelsApiResponse) => {
+          if (response.status === Status.Success && response.data !== null) {
+            this._modelsData.next(response.data);
+          } else {
+            // TODO Error
+          }
+        }),
     );
   }
 
-  private fetchOptionsData(modelCode: string | null): Observable<OptionsApiResponse | null> {
+  private fetchOptionsData(modelCode: string | null): Observable<OptionsApiData | null> {
     if (!modelCode) {
       return of(null);
     } else {
-      return this.apiService.getOptions(modelCode); // TODO Handle errors
+      return this.apiService.getOptions(modelCode).pipe(
+        catchError(() => {
+          return of({
+            status: Status.Error,
+            data: null,
+            message: 'Something went wrong...',
+          });
+        }),
+        map((response: OptionsApiResponse) => {
+          if (response.status === Status.Success) {
+            return response.data;
+          } else {
+            // TODO Error
+            throw Error('TODO');
+          }
+        }),
+      );
     }
   }
 
   private subscribeToDataChanges(): void {
     this.subscription.add(
-      this._modelsData.asObservable().subscribe((data: ModelsApiResponse) => {
+      this._modelsData.asObservable().subscribe((data: ModelsApiData) => {
         if (this._loading.getValue()) {
           this._loading.next(false);
         }
@@ -186,7 +229,7 @@ export class ConfiguratorService implements OnDestroy {
           }),
           mergeMap((modelCode: string | null) => this.fetchOptionsData(modelCode)),
         )
-        .subscribe((result: OptionsApiResponse | null) => this._optionsData.next(result)),
+        .subscribe((result: OptionsApiData | null) => this._optionsData.next(result)),
     );
   }
 
@@ -221,7 +264,7 @@ export class ConfiguratorService implements OnDestroy {
           this._yoke.next(false);
           this._config.next(null);
         } else {
-          const options: OptionsApiResponse | null = this._optionsData.getValue();
+          const options: OptionsApiData | null = this._optionsData.getValue();
           const config: Config | undefined = (options?.configs || []).find(
             (config) => config.id === +configId,
           );
@@ -252,7 +295,7 @@ export class ConfiguratorService implements OnDestroy {
     this.subscription.add(
       this.form.controls['model'].valueChanges
         .pipe(mergeMap((modelCode: string | null) => this.fetchOptionsData(modelCode)))
-        .subscribe((result: OptionsApiResponse | null) => this._optionsData.next(result)),
+        .subscribe((result: OptionsApiData | null) => this._optionsData.next(result)),
     );
   }
 

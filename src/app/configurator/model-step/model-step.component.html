@@ -1,6 +1,6 @@
 <form *ngIf="(loading | async) === false; else loader" [formGroup]="service.form">
   <div class="container" *ngIf="models | async as models; else error">
-    <div class="row">
+    <div class="row" *ngIf="models.length; else error">
       <div class="col-sm-12">
         <div class="input-group">
           <label for="modelSelect">Model</label>
@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <ng-container *ngIf="colors | async as colors">
+    <ng-container *ngIf="colors | async as colors; else error">
       <div class="row" *ngIf="colors.length">
         <div class="col-sm-12">
           <div class="input-group">
@@ -33,11 +33,9 @@
       </div>
     </ng-container>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="image | async as image">
     <div class="col-sm-12">
-      <ng-container *ngIf="image | async as image; else imagePlaceholder">
-        <app-image [src]="image.src" [width]="1260" [height]="738" [alt]="image.alt"></app-image>
-      </ng-container>
+      <app-image [src]="image.src" [width]="1260" [height]="738" [alt]="image.alt"></app-image>
     </div>
   </div>
 </form>
@@ -45,8 +43,10 @@
   <div class="spinner"></div>
 </ng-template>
 <!-- TODO Use error -->
-<ng-template #error>Error!</ng-template>
-<ng-template #imagePlaceholder>
-  <!-- TODO Fix it -->
-  <div [ngStyle]="{ width: '1260px', height: '738px' }"></div>
+<ng-template #error>
+  <app-error-toast
+    title="Error"
+    message="Something went wrong"
+    button="Reload"
+    [onClick]=""></app-error-toast>
 </ng-template>
