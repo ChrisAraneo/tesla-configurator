@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ConfiguratorService } from '../configurator.service';
 import { ConfigStepComponent } from './config-step.component';
 
 describe('ConfigStepComponent', () => {
@@ -8,6 +9,12 @@ describe('ConfigStepComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ConfigStepComponent],
+      providers: [
+        {
+          provide: ConfiguratorService,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ConfigStepComponent);

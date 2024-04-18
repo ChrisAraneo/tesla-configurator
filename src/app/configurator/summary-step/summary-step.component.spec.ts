@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ConfiguratorService } from '../configurator.service';
 import { SummaryStepComponent } from './summary-step.component';
 
 describe('SummaryStepComponent', () => {
@@ -8,6 +9,12 @@ describe('SummaryStepComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SummaryStepComponent],
+      providers: [
+        {
+          provide: ConfiguratorService,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SummaryStepComponent);
