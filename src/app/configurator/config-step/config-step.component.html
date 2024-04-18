@@ -1,1 +1,63 @@
-<p>config-step works!</p>
+<form *ngIf="(loading | async) === false; else loader" [formGroup]="service.form">
+  <div class="container" *ngIf="options | async as options; else error">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="input-group">
+          <label for="configSelect">Config</label>
+          <select id="configSelect" placeholder="Config" formControlName="config">
+            <option></option>
+            <ng-container *ngFor="let config of options.configs">
+              <option value="{{ config.id }}">
+                {{ config.description }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+        <!-- TODO Add tow control, add yoke control -->
+      </div>
+    </div>
+    <div class="row" *ngIf="(range | async) !== null">
+      <!-- TODO Implement miles pipe -->
+      <div class="col-sm-12">Range: {{ range | async }} miles</div>
+    </div>
+    <div class="row" *ngIf="(maxSpeed | async) !== null">
+      <div class="col-sm-12">Max speed: {{ maxSpeed | async }}</div>
+    </div>
+    <div class="row" *ngIf="(price | async) !== null">
+      <!-- TODO Price pipe -->
+      <div class="col-sm-12">Cost: {{ price | async }}</div>
+    </div>
+    <div class="row" *ngIf="towHitch | async">
+      <div class="col-sm-12">
+        <span>Tow hitch?</span>
+        <div>
+          <input id="includeTow" type="checkbox" autocomplete="off" formControlName="towHitch" />
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="yoke | async">
+      <div class="col-sm-12">
+        <span>Yoke steering wheel?</span>
+        <div>
+          <input id="includeYoke" type="checkbox" autocomplete="off" formControlName="yoke" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <ng-container *ngIf="image | async as image; else imagePlaceholder">
+        <app-image [src]="image.src" [width]="1260" [height]="738" [alt]="image.alt"></app-image>
+      </ng-container>
+    </div>
+  </div>
+</form>
+<ng-template #loader>
+  <div class="spinner"></div>
+</ng-template>
+<!-- TODO Use error -->
+<ng-template #error>Error!</ng-template>
+<ng-template #imagePlaceholder>
+  <!-- TODO Fix it -->
+  <div [ngStyle]="{ width: '1260px', height: '738px' }"></div>
+</ng-template>
