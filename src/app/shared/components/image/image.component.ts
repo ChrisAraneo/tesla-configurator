@@ -1,10 +1,10 @@
-import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, NgStyle } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-image',
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, NgStyle],
   templateUrl: './image.component.html',
   styleUrl: './image.component.scss',
 })
@@ -12,6 +12,8 @@ export class ImageComponent implements AfterViewInit {
   @Input({ required: true }) src: string = '';
   @Input({ required: true }) width: number = 0;
   @Input({ required: true }) height: number = 0;
+  @Input() maxWidth?: number;
+  @Input() maxHeight?: number;
   @Input({ required: true }) alt: string = '';
 
   @ViewChild('image') imageRef?: ElementRef;
