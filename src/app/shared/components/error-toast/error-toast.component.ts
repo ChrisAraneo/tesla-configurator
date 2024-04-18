@@ -5,13 +5,13 @@ import { ParagraphComponent } from '../paragraph/paragraph.component';
 import { TitleComponent } from '../title/title.component';
 
 @Component({
-  selector: 'app-error-card',
+  selector: 'app-error-toast',
   standalone: true,
   imports: [TitleComponent, ParagraphComponent, NgIf, RouterLink],
-  templateUrl: './error-card.component.html',
-  styleUrl: './error-card.component.scss',
+  templateUrl: './error-toast.component.html',
+  styleUrl: './error-toast.component.scss',
 })
-export class ErrorCardComponent {
+export class ErrorToastComponent {
   @Input() title: string = '';
   @Input() message: string = '';
   @Input() button: string = '';

@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ErrorCardComponent } from './error-card.component';
+import { ErrorToastComponent } from './error-toast.component';
 
-describe('ErrorCardComponent', () => {
-  let component: ErrorCardComponent;
-  let fixture: ComponentFixture<ErrorCardComponent>;
+describe('ErrorToastComponent', () => {
+  let component: ErrorToastComponent;
+  let fixture: ComponentFixture<ErrorToastComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ErrorCardComponent],
+      imports: [ErrorToastComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ErrorCardComponent);
+    fixture = TestBed.createComponent(ErrorToastComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
