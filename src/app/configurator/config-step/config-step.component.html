@@ -48,7 +48,13 @@
     <div class="col-sm-12">
       <!-- TODO Add skeletons or loaders -->
       <ng-container *ngIf="image | async as image; else imagePlaceholder">
-        <app-image [src]="image.src" [width]="1260" [height]="738" [alt]="image.alt"></app-image>
+        <app-image
+          [src]="image.src"
+          [width]="480"
+          [height]="320"
+          [maxWidth]="480"
+          [maxHeight]="320"
+          [alt]="image.alt"></app-image>
       </ng-container>
     </div>
   </div>
