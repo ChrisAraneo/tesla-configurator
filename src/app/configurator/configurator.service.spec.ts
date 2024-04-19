@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
-import { ApiService } from '../shared/services/api.service';
-import { ModelsApiResponse } from '../shared/services/types/models-api-response.type';
-import { Status } from '../shared/services/types/status.type';
+import { ApiService } from '../shared/services/api/api.service';
+import { ModelsApiResponse } from '../shared/services/api/types/models-api-response.type';
+import { Status } from '../shared/services/api/types/status.type';
 import { ConfiguratorService } from './configurator.service';
 
 describe('ConfiguratorService', () => {

@@ -14,15 +14,15 @@ import {
   of,
   tap,
 } from 'rxjs';
-import { ApiService } from '../shared/services/api.service';
-import { Color } from '../shared/services/types/color.type';
-import { Config } from '../shared/services/types/config.type';
-import { Model } from '../shared/services/types/model.type';
-import { ModelsApiData } from '../shared/services/types/models-api-data.type';
-import { ModelsApiResponse } from '../shared/services/types/models-api-response.type';
-import { OptionsApiData } from '../shared/services/types/options-api-data.type';
-import { OptionsApiResponse } from '../shared/services/types/options-api-response.type';
-import { Status } from '../shared/services/types/status.type';
+import { ApiService } from '../shared/services/api/api.service';
+import { Color } from '../shared/services/api/types/color.type';
+import { Config } from '../shared/services/api/types/config.type';
+import { Model } from '../shared/services/api/types/model.type';
+import { ModelsApiData } from '../shared/services/api/types/models-api-data.type';
+import { ModelsApiResponse } from '../shared/services/api/types/models-api-response.type';
+import { OptionsApiData } from '../shared/services/api/types/options-api-data.type';
+import { OptionsApiResponse } from '../shared/services/api/types/options-api-response.type';
+import { Status } from '../shared/services/api/types/status.type';
 import { ConfiguratorForm } from './shared/configurator-form.type';
 import { DisabledSteps } from './shared/disabled-steps.type';
 import { Error } from './shared/error.type';
