@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest, map } from 'rxjs';
 import { ErrorToastComponent } from '../../shared/components/error-toast/error-toast.component';
@@ -14,7 +14,7 @@ import { Image } from '../shared/image.type';
 @Component({
   selector: 'app-summary-step',
   standalone: true,
-  imports: [TitleComponent, AsyncPipe, NgIf, ImageComponent, ErrorToastComponent],
+  imports: [TitleComponent, AsyncPipe, NgIf, ImageComponent, ErrorToastComponent, CurrencyPipe],
   templateUrl: './summary-step.component.html',
   styleUrl: './summary-step.component.scss',
 })

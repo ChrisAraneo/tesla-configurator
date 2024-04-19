@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -21,6 +21,7 @@ import { Options } from '../shared/options.type';
     NgFor,
     ErrorToastComponent,
     TitleComponent,
+    CurrencyPipe,
   ],
   templateUrl: './config-step.component.html',
   styleUrl: './config-step.component.scss',

@@ -20,33 +20,32 @@
         </div>
       </div>
     </div>
-    <!-- TODO Fix columns and siplaying -->
     <div class="row" *ngIf="(range | async) !== null">
-      <!-- TODO Implement miles pipe -->
-      <div class="col-sm-12">Range: {{ range | async }} miles</div>
+      <div class="col-sm-3">Range:</div>
+      <div class="col-sm-9">{{ range | async }} miles</div>
     </div>
     <div class="row" *ngIf="(maxSpeed | async) !== null">
-      <div class="col-sm-12">Max speed: {{ maxSpeed | async }}</div>
+      <div class="col-sm-3">Max speed:</div>
+      <div class="col-sm-9">{{ maxSpeed | async }}</div>
     </div>
     <div class="row" *ngIf="(price | async) !== null">
-      <!-- TODO Price pipe -->
-      <div class="col-sm-12">Cost: {{ price | async }}</div>
+      <div class="col-sm-3">Cost:</div>
+      <div class="col-sm-9">{{ price | async | currency: 'USD' }}</div>
     </div>
     <div class="row" *ngIf="towHitch | async">
-      <div class="col-sm-12">
-        <!-- TODO Fix columns -->
-        <span>Tow hitch?</span>
-        <div>
-          <input id="includeTow" type="checkbox" autocomplete="off" formControlName="towHitch" />
-        </div>
+      <div class="col-sm-3">
+        <label for="includeTow">Tow hitch?</label>
+      </div>
+      <div class="col-sm-9">
+        <input id="includeTow" type="checkbox" autocomplete="off" formControlName="towHitch" />
       </div>
     </div>
     <div class="row" *ngIf="yoke | async">
-      <div class="col-sm-12">
-        <span>Yoke steering wheel?</span>
-        <div>
-          <input id="includeYoke" type="checkbox" autocomplete="off" formControlName="yoke" />
-        </div>
+      <div class="col-sm-3">
+        <label for="includeYoke">Yoke steering wheel?</label>
+      </div>
+      <div class="col-sm-9">
+        <input id="includeYoke" type="checkbox" autocomplete="off" formControlName="yoke" />
       </div>
     </div>
     <div class="row">

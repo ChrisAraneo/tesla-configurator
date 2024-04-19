@@ -1,37 +1,74 @@
-<div class="container">
+<div class="container summary">
   <div class="row">
     <div class="col-sm-12">
       <app-title>Step 3: Summary</app-title>
     </div>
   </div>
-  <!-- TODO Finish component template structure -->
-  <div>
-    <h2 *ngIf="model | async as model">{{ model.description }}</h2>
+  <div class="row">
+    <div class="col-sm-12">
+      <h2 *ngIf="model | async as model">Your Tesla {{ model.description }}</h2>
+    </div>
   </div>
-  <div *ngIf="config | async as config">
-    <h3>{{ config.description }}</h3>
-    <span>Range: {{ config.range }}</span>
-    <span>Max speed: {{ config.speed }}</span>
-    <span>{{ config.price }}</span>
+  <div class="row" *ngIf="config | async as config">
+    <div class="col-sm-8">
+      <div class="col-12-sm">
+        <span>{{ config.description }}</span>
+        <div>
+          <span>Range: {{ config.range }}</span>
+          <span> - </span>
+          <span>Max speed: {{ config.speed }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <span>{{ config.price | currency: 'USD' }}</span>
+    </div>
   </div>
-  <div *ngIf="color | async as color">
-    <h3>{{ color.description }}</h3>
-    <span>{{ color.price }}</span>
+
+  <div class="row" *ngIf="color | async as color">
+    <div class="col-sm-8">
+      <div class="col-12-sm">
+        <span>{{ color.description }}</span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <span>{{ color.price | currency: 'USD' }}</span>
+    </div>
   </div>
-  <div *ngIf="towHitch | async">
-    <h3>Tow Hitch Package</h3>
-    <!-- TODO Move this amount -->
-    <span>{{ 1000 }}</span>
+
+  <div class="row" *ngIf="towHitch | async">
+    <div class="col-sm-8">
+      <div class="col-12-sm">
+        <span>Tow Hitch Package</span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <!-- TODO Move this amount, update rule on additional price -->
+      <span>{{ 1000 | currency: 'USD' }}</span>
+    </div>
   </div>
-  <div *ngIf="yoke | async">
-    <h3>Yoke steering wheel</h3>
-    <!-- TODO Move this amount, update rule on additional price -->
-    <span>{{ 1000 }}</span>
+
+  <div class="row" *ngIf="yoke | async">
+    <div class="col-sm-8">
+      <div class="col-12-sm">
+        <span>Yoke steering wheel</span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <!-- TODO Move this amount, update rule on additional price -->
+      <span>{{ 1000 | currency: 'USD' }}</span>
+    </div>
   </div>
-  <div>
-    <h3>Total cost</h3>
-    <span>{{ total | async }}</span>
+
+  <div class="row">
+    <div class="col-sm-8">
+      <span>Total cost</span>
+    </div>
+    <div class="col-sm-4">
+      <span>{{ total | async | currency: 'USD' }}</span>
+    </div>
   </div>
+
   <div class="row">
     <div class="col-sm-12">
       <ng-container *ngIf="image | async as image">

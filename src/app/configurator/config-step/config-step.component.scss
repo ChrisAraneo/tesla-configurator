@@ -1,4 +1,6 @@
 form {
-  min-width: 530px;
-  min-height: 645px;
+  box-sizing: border-box;
+  height: 700px;
+  width: calc(900px - 5 * 0.5rem);
+  padding: calc(1.5 * var(--universal-padding)) 0;
 }
