@@ -16,7 +16,9 @@
   </div>
   <div class="row" *ngIf="button">
     <div class="col-sm-12">
-      <a href="#" class="button" (click)="onClick ? onClick() : null">{{ button }}</a>
+      <a href="#" class="button" (click)="$event.preventDefault(); onClick ? onClick() : null">{{
+        button
+      }}</a>
     </div>
   </div>
 </div>
