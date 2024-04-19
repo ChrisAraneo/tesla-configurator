@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 import { ErrorToastComponent } from '../../shared/components/error-toast/error-toast.component';
 import { ImageComponent } from '../../shared/components/image/image.component';
 import { TitleComponent } from '../../shared/components/title/title.component';
+import { Error } from '../../shared/services/global-error-handler/error.type';
 import { ConfiguratorService } from '../configurator.service';
-import { Error } from '../shared/error.type';
 import { Image } from '../shared/image.type';
 import { Options } from '../shared/options.type';
 

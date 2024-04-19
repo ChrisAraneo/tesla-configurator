@@ -23,9 +23,9 @@ import { ModelsApiResponse } from '../shared/services/api/types/models-api-respo
 import { OptionsApiData } from '../shared/services/api/types/options-api-data.type';
 import { OptionsApiResponse } from '../shared/services/api/types/options-api-response.type';
 import { Status } from '../shared/services/api/types/status.type';
+import { Error } from '../shared/services/global-error-handler/error.type';
 import { ConfiguratorForm } from './shared/configurator-form.type';
 import { DisabledSteps } from './shared/disabled-steps.type';
-import { Error } from './shared/error.type';
 import { Image } from './shared/image.type';
 import { Options } from './shared/options.type';
 
