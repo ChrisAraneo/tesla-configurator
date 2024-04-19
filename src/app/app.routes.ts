@@ -12,7 +12,7 @@ import { canActivateSummaryStep } from './shared/guards/can-activate-summary-ste
 export const routes: Routes = [
   {
     path: '',
-    title: 'Tesla Configurator - Welcome',
+    title: 'Welcome - Tesla Configurator',
     component: HomeComponent,
   },
   {
@@ -21,19 +21,19 @@ export const routes: Routes = [
     children: [
       {
         path: '1',
-        title: 'Tesla Configurator - Step 1 - Choose model & color',
+        title: 'Step 1 - Choose model & color - Tesla Configurator',
         component: ModelStepComponent,
       },
       {
         path: '2',
         canActivate: [canActivateConfigStep],
-        title: 'Tesla Configurator - Step 2 - Select config & options',
+        title: 'Step 2 - Select config & options - Tesla Configurator',
         component: ConfigStepComponent,
       },
       {
         path: '3',
         canActivate: [canActivateSummaryStep],
-        title: 'Tesla Configurator - Step 3 - Summary',
+        title: 'Step 3 - Summary - Tesla Configurator',
         component: SummaryStepComponent,
       },
       {
@@ -45,12 +45,12 @@ export const routes: Routes = [
   },
   {
     path: 'forbidden',
-    title: 'Tesla Configurator - Forbidden',
+    title: 'Forbidden - Tesla Configurator',
     component: ForbiddenComponent,
   },
   {
     path: '**',
-    title: 'Tesla Configurator - Page not found',
+    title: 'Page not found - Tesla Configurator',
     component: NotFoundComponent,
   },
 ];
