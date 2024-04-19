@@ -3,7 +3,6 @@ import { CanActivateFn, Router } from '@angular/router';
 import { first, map, mergeMap } from 'rxjs';
 import { ConfiguratorService } from '../../configurator/configurator.service';
 
-// TODO File name? Fix name?
 export const canActivateConfigStep: CanActivateFn = () => {
   const service: ConfiguratorService = inject(ConfiguratorService);
   const router: Router = inject(Router);
