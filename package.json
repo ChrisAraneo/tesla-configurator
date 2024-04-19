@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "npx eslint \"src/**/*.ts\" \"src/**/*.html\" --fix",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.spec.ts\" \"src/**/*.json\""
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.spec.ts\""
   },
   "private": true,
   "dependencies": {
