@@ -13,7 +13,7 @@
             <option></option>
             <ng-container *ngFor="let model of models">
               <option value="{{ model.code }}">
-                {{ model.code }}
+                {{ model.description }}
               </option>
             </ng-container>
           </select>
@@ -29,7 +29,7 @@
               <option></option>
               <ng-container *ngFor="let color of colors">
                 <option value="{{ color.code }}">
-                  {{ color.code }}
+                  {{ color.description }}
                 </option>
               </ng-container>
             </select>
