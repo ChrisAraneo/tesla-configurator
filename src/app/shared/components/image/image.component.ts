@@ -24,12 +24,12 @@ export class ImageComponent implements AfterViewInit {
     const nativeImageElement: HTMLImageElement | undefined = this.imageRef?.nativeElement;
 
     if (nativeImageElement) {
-      // TODO Destroy??
       nativeImageElement.addEventListener('load', () => {
         this.isLoading = false;
       });
-      nativeImageElement.addEventListener('error', () => {
-        // TODO Handle error
+      nativeImageElement.addEventListener('error', (error: ErrorEvent) => {
+        console.error(error);
+        throw Error('Error while loading image');
       });
     }
   }
