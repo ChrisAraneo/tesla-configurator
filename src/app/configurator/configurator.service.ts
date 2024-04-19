@@ -15,13 +15,13 @@ import {
   tap,
 } from 'rxjs';
 import { ApiService } from '../shared/services/api/api.service';
+import { ApiResponse } from '../shared/services/api/types/api-response.type';
 import { Color } from '../shared/services/api/types/color.type';
 import { Config } from '../shared/services/api/types/config.type';
 import { Model } from '../shared/services/api/types/model.type';
 import { ModelsApiData } from '../shared/services/api/types/models-api-data.type';
 import { ModelsApiResponse } from '../shared/services/api/types/models-api-response.type';
-import { OptionsApiData } from '../shared/services/api/types/options-api-data.type';
-import { OptionsApiResponse } from '../shared/services/api/types/options-api-response.type';
+import { ProcessedOptionsApiData } from '../shared/services/api/types/processed-options-api-data.type';
 import { Status } from '../shared/services/api/types/status.type';
 import { Error } from '../shared/services/global-error-handler/error.type';
 import { ConfiguratorForm } from './shared/configurator-form.type';
@@ -40,7 +40,7 @@ export class ConfiguratorService implements OnDestroy {
   private _disabledSteps = new BehaviorSubject<DisabledSteps>({ 1: true, 2: true, 3: true });
 
   private _modelsData = new BehaviorSubject<ModelsApiData>([]);
-  private _optionsData = new BehaviorSubject<OptionsApiData | null>(null);
+  private _optionsData = new BehaviorSubject<ProcessedOptionsApiData | null>(null);
 
   private _models = new BehaviorSubject<Model[]>([]);
   private _colors = new BehaviorSubject<Color[]>([]);
@@ -48,8 +48,8 @@ export class ConfiguratorService implements OnDestroy {
   private _range = new BehaviorSubject<number | null>(null);
   private _maxSpeed = new BehaviorSubject<number | null>(null);
   private _price = new BehaviorSubject<number | null>(null);
-  private _towHitch = new BehaviorSubject<boolean>(false);
-  private _yoke = new BehaviorSubject<boolean>(false);
+  private _towHitch = new BehaviorSubject<{ enabled: boolean; price: number } | null>(null); // TODO Type
+  private _yoke = new BehaviorSubject<{ enabled: boolean; price: number } | null>(null);
 
   private _model = new BehaviorSubject<Model | null>(null);
   private _color = new BehaviorSubject<Color | null>(null);
@@ -117,11 +117,11 @@ export class ConfiguratorService implements OnDestroy {
     return this._price.asObservable();
   }
 
-  get towHitch(): Observable<boolean> {
+  get towHitch(): Observable<{ enabled: boolean; price: number } | null> {
     return this._towHitch.asObservable();
   }
 
-  get yoke(): Observable<boolean> {
+  get yoke(): Observable<{ enabled: boolean; price: number } | null> {
     return this._yoke.asObservable();
   }
 
@@ -203,7 +203,7 @@ export class ConfiguratorService implements OnDestroy {
     );
   }
 
-  private fetchOptionsData(modelCode: string | null): Observable<OptionsApiData | null> {
+  private fetchOptionsData(modelCode: string | null): Observable<ProcessedOptionsApiData | null> {
     if (!modelCode) {
       return of(null);
     } else {
@@ -216,7 +216,7 @@ export class ConfiguratorService implements OnDestroy {
             message: 'Something went wrong...',
           });
         }),
-        map((response: OptionsApiResponse) => {
+        map((response: ApiResponse<ProcessedOptionsApiData>) => {
           this._loading.next(false);
 
           if (response.status === Status.Success) {
@@ -263,7 +263,7 @@ export class ConfiguratorService implements OnDestroy {
           }),
           mergeMap((modelCode: string | null) => this.fetchOptionsData(modelCode)),
         )
-        .subscribe((result: OptionsApiData | null) => this._optionsData.next(result)),
+        .subscribe((result: ProcessedOptionsApiData | null) => this._optionsData.next(result)),
     );
   }
 
@@ -294,11 +294,11 @@ export class ConfiguratorService implements OnDestroy {
           this._range.next(null);
           this._maxSpeed.next(null);
           this._price.next(null);
-          this._towHitch.next(false);
-          this._yoke.next(false);
+          this._towHitch.next(null);
+          this._yoke.next(null);
           this._config.next(null);
         } else {
-          const options: OptionsApiData | null = this._optionsData.getValue();
+          const options: ProcessedOptionsApiData | null = this._optionsData.getValue();
           const config: Config | undefined = (options?.configs || []).find(
             (config) => config.id === +configId,
           );
@@ -309,14 +309,14 @@ export class ConfiguratorService implements OnDestroy {
             this._range.next(config.range);
             this._maxSpeed.next(config.speed);
             this._price.next(config.price);
-            this._towHitch.next(options?.towHitch || false);
-            this._yoke.next(options?.yoke || false);
+            this._towHitch.next(options?.towHitch || null);
+            this._yoke.next(options?.yoke || null);
 
-            if (options?.towHitch === false) {
+            if (options?.towHitch?.enabled === false) {
               this.form.controls['towHitch'].patchValue(false);
             }
 
-            if (options?.yoke === false) {
+            if (options?.yoke?.enabled === false) {
               this.form.controls['yoke'].patchValue(false);
             }
           } else {
@@ -329,7 +329,7 @@ export class ConfiguratorService implements OnDestroy {
     this.subscription.add(
       this.form.controls['model'].valueChanges
         .pipe(mergeMap((modelCode: string | null) => this.fetchOptionsData(modelCode)))
-        .subscribe((result: OptionsApiData | null) => this._optionsData.next(result)),
+        .subscribe((result: ProcessedOptionsApiData | null) => this._optionsData.next(result)),
     );
   }
 

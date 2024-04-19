@@ -34,8 +34,8 @@ export class ConfigStepComponent implements OnInit {
   range!: Observable<number | null>;
   maxSpeed!: Observable<number | null>;
   price!: Observable<number | null>;
-  towHitch!: Observable<boolean>;
-  yoke!: Observable<boolean>;
+  towHitch!: Observable<{ enabled: boolean; price: number } | null>;
+  yoke!: Observable<{ enabled: boolean; price: number } | null>;
   image!: Observable<Image | null>;
 
   constructor(readonly service: ConfiguratorService) {}

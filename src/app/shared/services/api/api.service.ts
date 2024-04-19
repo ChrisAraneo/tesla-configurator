@@ -2,10 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, catchError, map, of, retry } from 'rxjs';
 import { ApiEndpoints } from './types/api-endpoints.type';
+import { ApiResponse } from './types/api-response.type';
 import { ModelsApiData } from './types/models-api-data.type';
 import { ModelsApiResponse } from './types/models-api-response.type';
 import { OptionsApiData } from './types/options-api-data.type';
-import { OptionsApiResponse } from './types/options-api-response.type';
+import { ProcessedOptionsApiData } from './types/processed-options-api-data.type';
 import { Status } from './types/status.type';
 
 @Injectable({
@@ -14,6 +15,9 @@ import { Status } from './types/status.type';
 export class ApiService {
   private readonly retryCount = 10;
   private readonly retryDelay = 250;
+
+  private readonly fixedTowPrice = 1000;
+  private readonly fixedYokePrice = 1000;
 
   constructor(
     @Inject('API') private api: ApiEndpoints,
@@ -39,7 +43,7 @@ export class ApiService {
     );
   }
 
-  getOptions(modelCode: string): Observable<OptionsApiResponse> {
+  getOptions(modelCode: string): Observable<ApiResponse<ProcessedOptionsApiData>> {
     return this.httpClient
       .get<OptionsApiData>(this.api.optionsEndpoint.replace(':id', modelCode))
       .pipe(
@@ -47,7 +51,17 @@ export class ApiService {
         map((response: OptionsApiData) => {
           return {
             status: Status.Success,
-            data: response,
+            data: {
+              ...response,
+              towHitch: {
+                enabled: response.towHitch,
+                price: this.fixedTowPrice,
+              },
+              yoke: {
+                enabled: response.towHitch,
+                price: this.fixedYokePrice,
+              },
+            },
           };
         }),
         catchError(() => {

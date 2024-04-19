@@ -25,8 +25,8 @@ export class SummaryStepComponent implements OnInit {
   model!: Observable<Model>;
   config!: Observable<Config>;
   color!: Observable<Color>;
-  towHitch!: Observable<boolean>;
-  yoke!: Observable<boolean>;
+  towHitch!: Observable<{ enabled: boolean; price: number } | null>;
+  yoke!: Observable<{ enabled: boolean; price: number } | null>;
   image!: Observable<Image | null>;
 
   total!: Observable<number>;
@@ -43,16 +43,23 @@ export class SummaryStepComponent implements OnInit {
     this.yoke = this.service.yoke;
     this.image = this.service.image;
 
-    // TODO Move calculating total to service
-    this.total = combineLatest([this.config, this.color, this.towHitch, this.yoke]).pipe(
-      map(([config, color, towHitch, yoke]) => {
-        // TODO Implement rule on additional 1000$s
-        return config.price + color.price + (towHitch ? 1000 : 0) + (yoke ? 1000 : 0);
-      }),
-    );
+    this.initializeTotalObservable();
   }
 
   reload: () => void = () => {
     this.service.reload();
   };
+
+  private initializeTotalObservable(): void {
+    this.total = combineLatest([this.config, this.color, this.towHitch, this.yoke]).pipe(
+      map(([config, color, towHitch, yoke]) => {
+        return (
+          config.price +
+          color.price +
+          (towHitch?.enabled ? towHitch.price : 0) +
+          (yoke?.enabled ? yoke.price : 0)
+        );
+      }),
+    );
+  }
 }

@@ -1,3 +1,3 @@
-import { OptionsApiData } from '../../shared/services/api/types/options-api-data.type';
+import { ProcessedOptionsApiData } from '../../shared/services/api/types/processed-options-api-data.type';
 
-export type Options = OptionsApiData;
+export type Options = ProcessedOptionsApiData;

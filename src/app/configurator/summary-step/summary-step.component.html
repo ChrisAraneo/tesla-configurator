@@ -36,29 +36,31 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="towHitch | async">
-    <div class="col-sm-8">
-      <div class="col-12-sm">
-        <span>Tow Hitch Package</span>
+  <ng-container *ngIf="towHitch | async as towHitch">
+    <div class="row" *ngIf="towHitch.enabled">
+      <div class="col-sm-8">
+        <div class="col-12-sm">
+          <span>Tow Hitch Package</span>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <span>{{ towHitch.price | currency: 'USD' }}</span>
       </div>
     </div>
-    <div class="col-sm-4">
-      <!-- TODO Move this amount, update rule on additional price -->
-      <span>{{ 1000 | currency: 'USD' }}</span>
-    </div>
-  </div>
+  </ng-container>
 
-  <div class="row" *ngIf="yoke | async">
-    <div class="col-sm-8">
-      <div class="col-12-sm">
-        <span>Yoke steering wheel</span>
+  <ng-container *ngIf="yoke | async as yoke">
+    <div class="row" *ngIf="yoke.enabled">
+      <div class="col-sm-8">
+        <div class="col-12-sm">
+          <span>Yoke steering wheel</span>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <span>{{ yoke.price | currency: 'USD' }}</span>
       </div>
     </div>
-    <div class="col-sm-4">
-      <!-- TODO Move this amount, update rule on additional price -->
-      <span>{{ 1000 | currency: 'USD' }}</span>
-    </div>
-  </div>
+  </ng-container>
 
   <div class="row">
     <div class="col-sm-8">
