@@ -20,11 +20,12 @@
   </div>
   <div *ngIf="towHitch | async">
     <h3>Tow Hitch Package</h3>
+    <!-- TODO Move this amount -->
     <span>{{ 1000 }}</span>
   </div>
   <div *ngIf="yoke | async">
     <h3>Yoke steering wheel</h3>
-    <!-- TODO Update rule on additional price -->
+    <!-- TODO Move this amount, update rule on additional price -->
     <span>{{ 1000 }}</span>
   </div>
   <div>
@@ -33,7 +34,6 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <!-- TODO Add skeletons or loaders -->
       <ng-container *ngIf="image | async as image">
         <app-image
           [src]="image.src"

@@ -18,9 +18,9 @@
             </ng-container>
           </select>
         </div>
-        <!-- TODO Add tow control, add yoke control -->
       </div>
     </div>
+    <!-- TODO Fix columns and siplaying -->
     <div class="row" *ngIf="(range | async) !== null">
       <!-- TODO Implement miles pipe -->
       <div class="col-sm-12">Range: {{ range | async }} miles</div>
@@ -34,6 +34,7 @@
     </div>
     <div class="row" *ngIf="towHitch | async">
       <div class="col-sm-12">
+        <!-- TODO Fix columns -->
         <span>Tow hitch?</span>
         <div>
           <input id="includeTow" type="checkbox" autocomplete="off" formControlName="towHitch" />
