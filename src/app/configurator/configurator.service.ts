@@ -26,6 +26,7 @@ import { Status } from '../shared/services/api/types/status.type';
 import { Error } from '../shared/services/global-error-handler/error.type';
 import { ConfiguratorForm } from './shared/configurator-form.type';
 import { DisabledSteps } from './shared/disabled-steps.type';
+import { ExtraOption } from './shared/extra-option.type';
 import { Image } from './shared/image.type';
 import { Options } from './shared/options.type';
 
@@ -48,8 +49,8 @@ export class ConfiguratorService implements OnDestroy {
   private _range = new BehaviorSubject<number | null>(null);
   private _maxSpeed = new BehaviorSubject<number | null>(null);
   private _price = new BehaviorSubject<number | null>(null);
-  private _towHitch = new BehaviorSubject<{ enabled: boolean; price: number } | null>(null); // TODO Type
-  private _yoke = new BehaviorSubject<{ enabled: boolean; price: number } | null>(null);
+  private _towHitch = new BehaviorSubject<ExtraOption | null>(null);
+  private _yoke = new BehaviorSubject<ExtraOption | null>(null);
 
   private _model = new BehaviorSubject<Model | null>(null);
   private _color = new BehaviorSubject<Color | null>(null);
@@ -117,11 +118,11 @@ export class ConfiguratorService implements OnDestroy {
     return this._price.asObservable();
   }
 
-  get towHitch(): Observable<{ enabled: boolean; price: number } | null> {
+  get towHitch(): Observable<ExtraOption | null> {
     return this._towHitch.asObservable();
   }
 
-  get yoke(): Observable<{ enabled: boolean; price: number } | null> {
+  get yoke(): Observable<ExtraOption | null> {
     return this._yoke.asObservable();
   }
 

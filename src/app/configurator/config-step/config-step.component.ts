@@ -7,6 +7,7 @@ import { ImageComponent } from '../../shared/components/image/image.component';
 import { TitleComponent } from '../../shared/components/title/title.component';
 import { Error } from '../../shared/services/global-error-handler/error.type';
 import { ConfiguratorService } from '../configurator.service';
+import { ExtraOption } from '../shared/extra-option.type';
 import { Image } from '../shared/image.type';
 import { Options } from '../shared/options.type';
 
@@ -34,8 +35,8 @@ export class ConfigStepComponent implements OnInit {
   range!: Observable<number | null>;
   maxSpeed!: Observable<number | null>;
   price!: Observable<number | null>;
-  towHitch!: Observable<{ enabled: boolean; price: number } | null>;
-  yoke!: Observable<{ enabled: boolean; price: number } | null>;
+  towHitch!: Observable<ExtraOption | null>;
+  yoke!: Observable<ExtraOption | null>;
   image!: Observable<Image | null>;
 
   constructor(readonly service: ConfiguratorService) {}

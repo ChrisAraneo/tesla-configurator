@@ -9,6 +9,7 @@ import { Config } from '../../shared/services/api/types/config.type';
 import { Model } from '../../shared/services/api/types/model.type';
 import { Error } from '../../shared/services/global-error-handler/error.type';
 import { ConfiguratorService } from '../configurator.service';
+import { ExtraOption } from '../shared/extra-option.type';
 import { Image } from '../shared/image.type';
 
 @Component({
@@ -25,8 +26,8 @@ export class SummaryStepComponent implements OnInit {
   model!: Observable<Model>;
   config!: Observable<Config>;
   color!: Observable<Color>;
-  towHitch!: Observable<{ enabled: boolean; price: number } | null>;
-  yoke!: Observable<{ enabled: boolean; price: number } | null>;
+  towHitch!: Observable<ExtraOption | null>;
+  yoke!: Observable<ExtraOption | null>;
   image!: Observable<Image | null>;
 
   total!: Observable<number>;
