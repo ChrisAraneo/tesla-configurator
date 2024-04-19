@@ -1,1 +1,11 @@
+<ng-container *ngIf="error | async as error">
+  <ng-container *ngIf="!isHidden">
+    <app-error-toast
+      title="Error"
+      [message]="error?.message || ''"
+      button="Hide"
+      [onClick]="hide"></app-error-toast>
+  </ng-container>
+</ng-container>
+
 <router-outlet></router-outlet>
