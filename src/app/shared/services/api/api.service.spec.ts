@@ -10,6 +10,13 @@ describe('ApiService', () => {
     TestBed.configureTestingModule({
       providers: [
         {
+          provide: 'API',
+          useValue: {
+            modelsEndpoint: '/models',
+            optionsEndpoint: '/options/:id',
+          },
+        },
+        {
           provide: HttpClient,
           useValue: {},
         },
