@@ -7,6 +7,7 @@ import {
   Subject,
   Subscription,
   catchError,
+  combineLatest,
   filter,
   first,
   map,
@@ -326,40 +327,40 @@ export class ConfiguratorService implements OnDestroy {
         }
       }),
     );
-
-    this.subscription.add(
-      this.form.controls['model'].valueChanges
-        .pipe(mergeMap((modelCode: string | null) => this.fetchOptionsData(modelCode)))
-        .subscribe((result: ProcessedOptionsApiData | null) => this._optionsData.next(result)),
-    );
   }
 
   private subscribeToFormGroupValueChanges(): void {
     this.subscription.add(
-      this.form.valueChanges.subscribe((value) => {
-        const model: string = value?.model || '';
-        const color: string = value?.color || '';
-        const configId: string = value?.config || '';
+      combineLatest([
+        this.form.controls['model'].valueChanges,
+        this.form.controls['color'].valueChanges,
+        this.form.controls['config'].valueChanges,
+      ])
+        .pipe(
+          map((values) => {
+            const [modelCode, color, configId] = values;
 
-        const disabledSteps: DisabledSteps = { 1: false, 2: true, 3: true };
+            const disabledSteps: DisabledSteps = { 1: false, 2: true, 3: true };
 
-        if (model && color) {
-          this._image.next({
-            src: `assets/${model.toLocaleLowerCase()}-${color.toLocaleLowerCase()}.jpg`,
-            alt: `Tesla car model ${model} in color ${color}`,
-          });
+            if (modelCode && color) {
+              this._image.next({
+                src: `assets/${modelCode.toLocaleLowerCase()}-${color.toLocaleLowerCase()}.jpg`,
+                alt: `Tesla car model ${modelCode} in color ${color}`,
+              });
 
-          disabledSteps[2] = false;
-        } else {
-          this._image.next(null);
-        }
+              disabledSteps[2] = false;
+            } else {
+              this._image.next(null);
+            }
 
-        if (model && color && configId) {
-          disabledSteps[3] = false;
-        }
+            if (modelCode && color && configId) {
+              disabledSteps[3] = false;
+            }
 
-        this._disabledSteps.next(disabledSteps);
-      }),
+            this._disabledSteps.next(disabledSteps);
+          }),
+        )
+        .subscribe(),
     );
   }
 }

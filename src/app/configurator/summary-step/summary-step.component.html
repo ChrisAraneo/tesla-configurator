@@ -24,7 +24,6 @@
       <span>{{ config.price | currency: 'USD' }}</span>
     </div>
   </div>
-
   <div class="row" *ngIf="color | async as color">
     <div class="col-sm-8">
       <div class="col-12-sm">
@@ -35,7 +34,6 @@
       <span>{{ color.price | currency: 'USD' }}</span>
     </div>
   </div>
-
   <ng-container *ngIf="towHitch | async as towHitch">
     <div class="row" *ngIf="towHitch.enabled">
       <div class="col-sm-8">
@@ -48,11 +46,11 @@
       </div>
     </div>
   </ng-container>
-
   <ng-container *ngIf="yoke | async as yoke">
     <div class="row" *ngIf="yoke.enabled">
       <div class="col-sm-8">
         <div class="col-12-sm">
+          <!-- TODO Bold text -->
           <span>Yoke steering wheel</span>
         </div>
       </div>
@@ -61,7 +59,6 @@
       </div>
     </div>
   </ng-container>
-
   <div class="row">
     <div class="col-sm-8">
       <span>Total cost</span>
@@ -70,7 +67,6 @@
       <span>{{ total | async | currency: 'USD' }}</span>
     </div>
   </div>
-
   <div class="row">
     <div class="col-sm-12">
       <ng-container *ngIf="image | async as image">
