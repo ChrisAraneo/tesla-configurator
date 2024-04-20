@@ -61,6 +61,8 @@ export class ConfiguratorService implements OnDestroy {
   private _model = new BehaviorSubject<Model | null>(null);
   private _color = new BehaviorSubject<Color | null>(null);
   private _config = new BehaviorSubject<Config | null>(null);
+  private _selectedTowHitch = new BehaviorSubject<boolean>(false);
+  private _selectedYoke = new BehaviorSubject<boolean>(false);
 
   private subscription = new Subscription();
 
@@ -79,6 +81,8 @@ export class ConfiguratorService implements OnDestroy {
     this.subscribeToColorControlValueChanges();
     this.subscribeToFormGroupValueChanges();
     this.subscribeToConfigControlValueChanges();
+    this.subscribeToTowHitchValueChanges();
+    this.subscribeToYokeValueChanges();
   }
 
   get form(): FormGroup<ConfiguratorForm> {
@@ -149,6 +153,14 @@ export class ConfiguratorService implements OnDestroy {
     return this._color
       .asObservable()
       .pipe(filter((color: Color | null) => color !== null)) as Observable<Color>;
+  }
+
+  get selectedTowHitch(): Observable<boolean> {
+    return this._selectedTowHitch.asObservable();
+  }
+
+  get selectedYoke(): Observable<boolean> {
+    return this._selectedYoke.asObservable();
   }
 
   ngOnDestroy(): void {
@@ -384,6 +396,22 @@ export class ConfiguratorService implements OnDestroy {
             throw Error('Config not found');
           }
         }
+      }),
+    );
+  }
+
+  private subscribeToTowHitchValueChanges(): void {
+    this.subscription.add(
+      this._form.controls.towHitch.valueChanges.subscribe((value: boolean | null) => {
+        this._selectedTowHitch.next(!!value);
+      }),
+    );
+  }
+
+  private subscribeToYokeValueChanges(): void {
+    this.subscription.add(
+      this._form.controls.yoke.valueChanges.subscribe((value: boolean | null) => {
+        this._selectedYoke.next(!!value);
       }),
     );
   }

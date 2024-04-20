@@ -39,7 +39,7 @@
     </div>
   </div>
   <ng-container *ngIf="towHitch | async as towHitch">
-    <div class="row" *ngIf="towHitch?.enabled">
+    <div class="row" *ngIf="towHitch?.enabled && !!(selectedTowHitch | async)">
       <div class="col-sm-8">
         <div class="col-12-sm">
           <span><strong>Tow Hitch Package</strong></span>
@@ -51,7 +51,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="yoke | async as yoke">
-    <div class="row" *ngIf="yoke?.enabled">
+    <div class="row" *ngIf="yoke?.enabled && !!(selectedYoke | async)">
       <div class="col-sm-8">
         <div class="col-12-sm">
           <strong><span>Yoke steering wheel</span></strong>

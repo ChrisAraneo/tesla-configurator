@@ -27,7 +27,9 @@ export class SummaryStepComponent implements OnInit {
   config!: Observable<Config>;
   color!: Observable<Color>;
   towHitch!: Observable<ExtraOption | null>;
+  selectedTowHitch!: Observable<boolean>;
   yoke!: Observable<ExtraOption | null>;
+  selectedYoke!: Observable<boolean>;
   image!: Observable<Image | null>;
 
   total!: Observable<number>;
@@ -41,7 +43,9 @@ export class SummaryStepComponent implements OnInit {
     this.config = this.service.selectedConfig;
     this.color = this.service.selectedColor;
     this.towHitch = this.service.towHitch;
+    this.selectedTowHitch = this.service.selectedTowHitch;
     this.yoke = this.service.yoke;
+    this.selectedYoke = this.service.selectedYoke;
     this.image = this.service.image;
 
     this.initializeTotalObservable();
@@ -52,13 +56,20 @@ export class SummaryStepComponent implements OnInit {
   };
 
   private initializeTotalObservable(): void {
-    this.total = combineLatest([this.config, this.color, this.towHitch, this.yoke]).pipe(
-      map(([config, color, towHitch, yoke]) => {
+    this.total = combineLatest([
+      this.config,
+      this.color,
+      this.towHitch,
+      this.selectedTowHitch,
+      this.yoke,
+      this.selectedYoke,
+    ]).pipe(
+      map(([config, color, towHitch, selectedTowHitch, yoke, selectedYoke]) => {
         return (
           config.price +
           color.price +
-          (towHitch?.enabled ? towHitch.price : 0) +
-          (yoke?.enabled ? yoke.price : 0)
+          (towHitch?.enabled && selectedTowHitch ? towHitch.price : 0) +
+          (yoke?.enabled && selectedYoke ? yoke.price : 0)
         );
       }),
     );
