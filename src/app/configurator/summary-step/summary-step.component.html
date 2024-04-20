@@ -35,7 +35,7 @@
     </div>
   </div>
   <ng-container *ngIf="towHitch | async as towHitch">
-    <div class="row" *ngIf="towHitch.enabled">
+    <div class="row" *ngIf="towHitch?.enabled">
       <div class="col-sm-8">
         <div class="col-12-sm">
           <span>Tow Hitch Package</span>
@@ -47,7 +47,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="yoke | async as yoke">
-    <div class="row" *ngIf="yoke.enabled">
+    <div class="row" *ngIf="yoke?.enabled">
       <div class="col-sm-8">
         <div class="col-12-sm">
           <!-- TODO Bold text -->

@@ -10,9 +10,9 @@
         <div class="input-group">
           <label for="configSelect">Config</label>
           <select id="configSelect" placeholder="Config" formControlName="config">
-            <option></option>
+            <option [ngValue]="null"></option>
             <ng-container *ngFor="let config of options.configs">
-              <option value="{{ config.id }}">
+              <option [ngValue]="config.id">
                 {{ config.description }}
               </option>
             </ng-container>
@@ -32,22 +32,30 @@
       <div class="col-sm-3">Cost:</div>
       <div class="col-sm-9">{{ price | async | currency: 'USD' }}</div>
     </div>
-    <div class="row" *ngIf="towHitch | async">
-      <div class="col-sm-3">
-        <label for="includeTow">Tow hitch?</label>
-      </div>
-      <div class="col-sm-9">
-        <input id="includeTow" type="checkbox" autocomplete="off" formControlName="towHitch" />
-      </div>
-    </div>
-    <div class="row" *ngIf="yoke | async">
-      <div class="col-sm-3">
-        <label for="includeYoke">Yoke steering wheel?</label>
-      </div>
-      <div class="col-sm-9">
-        <input id="includeYoke" type="checkbox" autocomplete="off" formControlName="yoke" />
-      </div>
-    </div>
+    <ng-container *ngIf="towHitch | async as towHitch">
+      <ng-container *ngIf="towHitch.enabled">
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="includeTow">Tow hitch?</label>
+          </div>
+          <div class="col-sm-9">
+            <input id="includeTow" type="checkbox" autocomplete="off" formControlName="towHitch" />
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="yoke | async as yoke">
+      <ng-container *ngIf="yoke.enabled">
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="includeYoke">Yoke steering wheel?</label>
+          </div>
+          <div class="col-sm-9">
+            <input id="includeYoke" type="checkbox" autocomplete="off" formControlName="yoke" />
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
     <div class="row">
       <div class="col-sm-12">
         <ng-container *ngIf="image | async as image">

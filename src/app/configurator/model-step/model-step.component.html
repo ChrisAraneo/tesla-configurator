@@ -10,9 +10,9 @@
         <div class="input-group">
           <label for="modelSelect">Model</label>
           <select id="modelSelect" placeholder="Model" formControlName="model">
-            <option></option>
+            <option [ngValue]="null"></option>
             <ng-container *ngFor="let model of models">
-              <option value="{{ model.code }}">
+              <option [ngValue]="model.code">
                 {{ model.description }}
               </option>
             </ng-container>
@@ -26,9 +26,9 @@
           <div class="input-group">
             <label for="colorSelect">Color</label>
             <select id="colorSelect" placeholder="Color" formControlName="color">
-              <option></option>
+              <option [ngValue]="null"></option>
               <ng-container *ngFor="let color of colors">
-                <option value="{{ color.code }}">
+                <option [ngValue]="color.code">
                   {{ color.description }}
                 </option>
               </ng-container>
