@@ -12,7 +12,9 @@
   <div class="row" *ngIf="config | async as config">
     <div class="col-sm-8">
       <div class="col-12-sm">
-        <span>{{ config.description }}</span>
+        <span>
+          <strong>{{ config.description }}</strong>
+        </span>
         <div>
           <span>Range: {{ config.range }}</span>
           <span> - </span>
@@ -27,7 +29,9 @@
   <div class="row" *ngIf="color | async as color">
     <div class="col-sm-8">
       <div class="col-12-sm">
-        <span>{{ color.description }}</span>
+        <span>
+          <strong>{{ color.description }}</strong>
+        </span>
       </div>
     </div>
     <div class="col-sm-4">
@@ -38,7 +42,7 @@
     <div class="row" *ngIf="towHitch?.enabled">
       <div class="col-sm-8">
         <div class="col-12-sm">
-          <span>Tow Hitch Package</span>
+          <span><strong>Tow Hitch Package</strong></span>
         </div>
       </div>
       <div class="col-sm-4">
@@ -50,8 +54,7 @@
     <div class="row" *ngIf="yoke?.enabled">
       <div class="col-sm-8">
         <div class="col-12-sm">
-          <!-- TODO Bold text -->
-          <span>Yoke steering wheel</span>
+          <strong><span>Yoke steering wheel</span></strong>
         </div>
       </div>
       <div class="col-sm-4">
@@ -59,9 +62,9 @@
       </div>
     </div>
   </ng-container>
-  <div class="row">
+  <div class="row total">
     <div class="col-sm-8">
-      <span>Total cost</span>
+      <span><strong>Total cost</strong></span>
     </div>
     <div class="col-sm-4">
       <span>{{ total | async | currency: 'USD' }}</span>
