@@ -168,7 +168,7 @@ export class ConfiguratorService implements OnDestroy {
           yoke: null,
         });
 
-        this.router.navigateByUrl(''); // TODO
+        this.router.navigateByUrl('');
       }),
     );
   }
@@ -426,7 +426,6 @@ export class ConfiguratorService implements OnDestroy {
         .subscribe(),
     );
 
-    // TODO Move?
     this.subscription.add(
       combineLatest([this._models, this._colors, this._optionsData]).subscribe((values) => {
         const [models, colors, options] = values;
