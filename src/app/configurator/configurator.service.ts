@@ -26,11 +26,11 @@ import { ModelsApiResponse } from '../shared/services/api/types/models-api-respo
 import { ProcessedOptionsApiData } from '../shared/services/api/types/processed-options-api-data.type';
 import { Status } from '../shared/services/api/types/status.type';
 import { Error } from '../shared/services/global-error-handler/error.type';
-import { ConfiguratorForm } from './shared/configurator-form.type';
-import { DisabledSteps } from './shared/disabled-steps.type';
-import { ExtraOption } from './shared/extra-option.type';
-import { Image } from './shared/image.type';
-import { Options } from './shared/options.type';
+import { ConfiguratorForm } from './shared/types/configurator-form.type';
+import { DisabledSteps } from './shared/types/disabled-steps.type';
+import { ExtraOption } from './shared/types/extra-option.type';
+import { Image } from './shared/types/image.type';
+import { Options } from './shared/types/options.type';
 
 @Injectable({
   providedIn: 'root',

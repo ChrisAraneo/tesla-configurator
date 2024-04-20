@@ -9,7 +9,7 @@ import { Color } from '../../shared/services/api/types/color.type';
 import { Model } from '../../shared/services/api/types/model.type';
 import { Error } from '../../shared/services/global-error-handler/error.type';
 import { ConfiguratorService } from '../configurator.service';
-import { Image } from '../shared/image.type';
+import { Image } from '../shared/types/image.type';
 
 @Component({
   selector: 'app-model-step',

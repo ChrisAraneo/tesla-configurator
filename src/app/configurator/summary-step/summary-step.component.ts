@@ -9,8 +9,8 @@ import { Config } from '../../shared/services/api/types/config.type';
 import { Model } from '../../shared/services/api/types/model.type';
 import { Error } from '../../shared/services/global-error-handler/error.type';
 import { ConfiguratorService } from '../configurator.service';
-import { ExtraOption } from '../shared/extra-option.type';
-import { Image } from '../shared/image.type';
+import { ExtraOption } from '../shared/types/extra-option.type';
+import { Image } from '../shared/types/image.type';
 
 @Component({
   selector: 'app-summary-step',

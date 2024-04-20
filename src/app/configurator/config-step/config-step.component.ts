@@ -7,9 +7,9 @@ import { ImageComponent } from '../../shared/components/image/image.component';
 import { TitleComponent } from '../../shared/components/title/title.component';
 import { Error } from '../../shared/services/global-error-handler/error.type';
 import { ConfiguratorService } from '../configurator.service';
-import { ExtraOption } from '../shared/extra-option.type';
-import { Image } from '../shared/image.type';
-import { Options } from '../shared/options.type';
+import { ExtraOption } from '../shared/types/extra-option.type';
+import { Image } from '../shared/types/image.type';
+import { Options } from '../shared/types/options.type';
 
 @Component({
   selector: 'app-config-step',
