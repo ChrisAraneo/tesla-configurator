@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { isNull } from 'lodash';
 import {
   BehaviorSubject,
   Observable,
@@ -31,6 +32,9 @@ import { DisabledSteps } from './shared/types/disabled-steps.type';
 import { ExtraOption } from './shared/types/extra-option.type';
 import { Image } from './shared/types/image.type';
 import { Options } from './shared/types/options.type';
+import { createExtraAvailableValidator } from './shared/validators/extra-available.validator';
+import { createOthersRequiredValidator } from './shared/validators/other-requires.validator';
+import { createValueValidator } from './shared/validators/value.validator';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +47,7 @@ export class ConfiguratorService implements OnDestroy {
   private _disabledSteps = new BehaviorSubject<DisabledSteps>({ 1: true, 2: true, 3: true });
 
   private _modelsData = new BehaviorSubject<ModelsApiData>([]);
-  private _optionsData = new BehaviorSubject<ProcessedOptionsApiData | null>(null);
+  private _optionsData = new BehaviorSubject<Options | null>(null);
 
   private _models = new BehaviorSubject<Model[]>([]);
   private _colors = new BehaviorSubject<Color[]>([]);
@@ -66,6 +70,7 @@ export class ConfiguratorService implements OnDestroy {
     private router: Router,
   ) {
     this.initializeForm();
+    this.updateFormValidators();
 
     this.fetchModelsData();
 
@@ -171,11 +176,59 @@ export class ConfiguratorService implements OnDestroy {
   private initializeForm(): void {
     this._form = this.formBuilder.group({
       model: new FormControl<string | null>(null),
-      color: new FormControl<string | null>(null), // TODO Add validation, color must be correct for model!
-      config: new FormControl<string | null>(null),
+      color: new FormControl<string | null>(null),
+      config: new FormControl<number | null>(null),
       towHitch: new FormControl<boolean | null>(null),
       yoke: new FormControl<boolean | null>(null),
     });
+  }
+
+  private updateFormValidators(
+    models: Model[] = [],
+    colors: Color[] = [],
+    options: Options | null = null,
+  ): void {
+    this._form.controls.model.clearValidators();
+    this._form.controls.model.addValidators([
+      Validators.required,
+      createValueValidator<string>(models.map((item: Model) => item.code)),
+    ]);
+
+    this._form.controls.color.clearValidators();
+    this._form.controls.color.addValidators([
+      Validators.required,
+      createValueValidator<string>(colors.map((item: Color) => item.code)),
+      createOthersRequiredValidator([this._form.controls.model]),
+    ]);
+
+    this._form.controls.config.clearValidators();
+    this._form.controls.config.addValidators([
+      Validators.required,
+      createValueValidator<number>(
+        options !== null ? options.configs.map((item: Config) => item.id) : [],
+      ),
+      createOthersRequiredValidator([this._form.controls.model, this._form.controls.color]),
+    ]);
+
+    this._form.controls.towHitch.clearValidators();
+
+    if (options?.towHitch.enabled) {
+      this._form.controls.towHitch.addValidators([
+        createExtraAvailableValidator(!!options?.towHitch.enabled),
+        createOthersRequiredValidator([this._form.controls.config]),
+      ]);
+    }
+
+    this._form.controls.yoke.clearValidators();
+
+    if (options?.yoke.enabled) {
+      this._form.controls.yoke.addValidators([
+        createExtraAvailableValidator(!!options?.yoke.enabled),
+        createOthersRequiredValidator([this._form.controls.config]),
+      ]);
+    }
+
+    this._form.updateValueAndValidity();
   }
 
   private fetchModelsData(): void {
@@ -207,7 +260,7 @@ export class ConfiguratorService implements OnDestroy {
   }
 
   private fetchOptionsData(modelCode: string | null): Observable<ProcessedOptionsApiData | null> {
-    if (!modelCode) {
+    if (modelCode === null) {
       return of(null);
     } else {
       return this.apiService.getOptions(modelCode).pipe(
@@ -246,7 +299,6 @@ export class ConfiguratorService implements OnDestroy {
     this.subscription.add(
       this.form.controls['model'].valueChanges
         .pipe(
-          distinct(),
           tap(() => {
             this.form.controls['color'].patchValue(null);
             this.form.controls['config'].patchValue(null);
@@ -255,12 +307,16 @@ export class ConfiguratorService implements OnDestroy {
           }),
           tap((modelCode: string | null) => {
             this._model.next(
-              this._models.getValue()?.find((model) => model.code === modelCode) || null,
+              modelCode === null
+                ? null
+                : this._models.getValue()?.find((model) => model.code === modelCode) || null,
             );
           }),
           tap((modelCode: string | null) => {
             this._colors.next(
-              this._modelsData.getValue().find((item) => item.code === modelCode)?.colors || [],
+              modelCode === null
+                ? []
+                : this._modelsData.getValue().find((item) => item.code === modelCode)?.colors || [],
             );
           }),
           mergeMap((modelCode: string | null) => this.fetchOptionsData(modelCode)),
@@ -274,86 +330,85 @@ export class ConfiguratorService implements OnDestroy {
 
   private subscribeToColorControlValueChanges(): void {
     this.subscription.add(
-      this.form.controls['color'].valueChanges
-        .pipe(distinct())
-        .subscribe((colorCode: string | null) => {
-          if (colorCode === null) {
-            this._color.next(null);
-          } else {
-            const model: (Model & { colors: Color[] }) | undefined = this._modelsData
-              .getValue()
-              .find((item) => item.code === this._model.getValue()?.code);
-            const color: Color | null =
-              model?.colors.find((item) => item.code === colorCode) || null;
+      this.form.controls['color'].valueChanges.subscribe((colorCode: string | null) => {
+        if (colorCode === null) {
+          this._color.next(null);
+        } else {
+          const model: (Model & { colors: Color[] }) | undefined = this._modelsData
+            .getValue()
+            .find((item) => item.code === this._model.getValue()?.code);
+          const color: Color | null = model?.colors.find((item) => item.code === colorCode) || null;
 
-            this._color.next(color);
-          }
-        }),
+          this._color.next(color);
+        }
+      }),
     );
   }
 
   private subscribeToConfigControlValueChanges(): void {
     this.subscription.add(
-      this.form.controls['config'].valueChanges
-        .pipe(distinct())
-        .subscribe((configId: string | null) => {
-          this.form.controls['towHitch'].patchValue(null);
-          this.form.controls['yoke'].patchValue(null);
+      this.form.controls['config'].valueChanges.subscribe((configId: string | number | null) => {
+        this.form.controls.towHitch.reset();
+        this.form.controls.yoke.reset();
 
-          if (!configId) {
-            this._range.next(null);
-            this._maxSpeed.next(null);
-            this._price.next(null);
-            this._towHitch.next(null);
-            this._yoke.next(null);
-            this._config.next(null);
-          } else {
-            const options: ProcessedOptionsApiData | null = this._optionsData.getValue();
-            const config: Config | undefined = (options?.configs || []).find(
-              (config) => config.id === +configId,
-            );
+        if (isNull(configId)) {
+          this._range.next(null);
+          this._maxSpeed.next(null);
+          this._price.next(null);
+          this._towHitch.next(null);
+          this._yoke.next(null);
+          this._config.next(null);
+        } else {
+          const options: ProcessedOptionsApiData | null = this._optionsData.getValue();
+          const config: Config | undefined = (options?.configs || []).find(
+            (config) => config.id === +configId,
+          );
 
-            if (config) {
-              this._config.next(config);
+          if (config) {
+            this._config.next(config);
 
-              this._range.next(config.range);
-              this._maxSpeed.next(config.speed);
-              this._price.next(config.price);
-              this._towHitch.next(options?.towHitch || null);
-              this._yoke.next(options?.yoke || null);
+            this._range.next(config.range);
+            this._maxSpeed.next(config.speed);
+            this._price.next(config.price);
+            this._towHitch.next(options?.towHitch || null);
+            this._yoke.next(options?.yoke || null);
 
-              if (options?.towHitch?.enabled === false) {
-                this.form.controls['towHitch'].patchValue(false);
-              }
-
-              if (options?.yoke?.enabled === false) {
-                this.form.controls['yoke'].patchValue(false);
-              }
-            } else {
-              throw Error('Config not found');
+            if (options?.towHitch?.enabled === false) {
+              this.form.controls['towHitch'].patchValue(false);
             }
+
+            if (options?.yoke?.enabled === false) {
+              this.form.controls['yoke'].patchValue(false);
+            }
+          } else {
+            throw Error('Config not found');
           }
-        }),
+        }
+      }),
     );
   }
 
   private subscribeToFormGroupValueChanges(): void {
     this.subscription.add(
       combineLatest([
-        this.form.controls['model'].valueChanges,
-        this.form.controls['color'].valueChanges,
-        this.form.controls['config'].valueChanges,
+        this.form.controls.model.valueChanges,
+        this.form.controls.color.valueChanges,
+        this.form.controls.config.valueChanges,
+        this.form.controls.towHitch.valueChanges,
+        this.form.controls.yoke.valueChanges,
       ])
         .pipe(
+          distinct(),
           map((values) => {
-            const [modelCode, color, configId] = values;
-
+            const [modelCode, colorCode] = values;
             const disabledSteps: DisabledSteps = { 1: false, 2: true, 3: true };
 
-            if (modelCode && color) {
+            this._form.updateValueAndValidity();
+
+            if (this._form.controls.model.valid && this._form.controls.color.valid) {
               this._image.next({
-                src: `assets/${modelCode.toLocaleLowerCase()}-${color.toLocaleLowerCase()}.jpg`,
-                alt: `Tesla car model ${modelCode} in color ${color}`,
+                src: `assets/${modelCode?.toLocaleLowerCase()}-${colorCode?.toLocaleLowerCase()}.jpg`,
+                alt: `Tesla car model ${modelCode} in color ${colorCode}`,
               });
 
               disabledSteps[2] = false;
@@ -361,7 +416,7 @@ export class ConfiguratorService implements OnDestroy {
               this._image.next(null);
             }
 
-            if (modelCode && color && configId) {
+            if (this._form.valid) {
               disabledSteps[3] = false;
             }
 
@@ -369,6 +424,15 @@ export class ConfiguratorService implements OnDestroy {
           }),
         )
         .subscribe(),
+    );
+
+    // TODO Move?
+    this.subscription.add(
+      combineLatest([this._models, this._colors, this._optionsData]).subscribe((values) => {
+        const [models, colors, options] = values;
+
+        this.updateFormValidators(models, colors, options);
+      }),
     );
   }
 }
