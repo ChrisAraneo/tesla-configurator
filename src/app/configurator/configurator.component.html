@@ -1,0 +1,36 @@
+<app-page
+  [backgroundImageSrc]="'assets/tesla-fans-schweiz-7_OQMgoGzDw-unsplash.jpg'"
+  backgroundImageAlt="TeslaCar">
+  <app-card>
+    <div class="container">
+      <div class="row" *ngIf="disabledSteps | async as disabledSteps">
+        <div class="col-sm-12">
+          <div class="button-group">
+            <button
+              id="step1"
+              [routerLink]="['/configurator', '1']"
+              [disabled]="disabledSteps[1]"
+              routerLinkActive="router-link-active">
+              Step 1
+            </button>
+            <button
+              id="step2"
+              [routerLink]="['/configurator', '2']"
+              [disabled]="disabledSteps[2]"
+              routerLinkActive="router-link-active">
+              Step 2
+            </button>
+            <button
+              id="step3"
+              [routerLink]="['/configurator', '3']"
+              [disabled]="disabledSteps[3]"
+              routerLinkActive="router-link-active">
+              Step 3
+            </button>
+          </div>
+        </div>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </app-card>
+</app-page>

@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100vh;
+}
+
+img {
+  display: hidden;
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+div {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+div.loaded {
+  opacity: 1;
+}

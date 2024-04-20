@@ -1,0 +1,85 @@
+<form *ngIf="(loading | async) === false; else loader" [formGroup]="service.form">
+  <div class="container" *ngIf="options | async as options">
+    <div class="row">
+      <div class="col-sm-12">
+        <app-title>Step 2: Select your config and options</app-title>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="input-group">
+          <label for="configSelect">Config</label>
+          <select id="configSelect" placeholder="Config" formControlName="config">
+            <option [ngValue]="null"></option>
+            <ng-container *ngFor="let config of options.configs">
+              <option [ngValue]="config.id">
+                {{ config.description }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="(range | async) !== null">
+      <div class="col-sm-3">Range:</div>
+      <div class="col-sm-9">{{ range | async }} miles</div>
+    </div>
+    <div class="row" *ngIf="(maxSpeed | async) !== null">
+      <div class="col-sm-3">Max speed:</div>
+      <div class="col-sm-9">{{ maxSpeed | async }}</div>
+    </div>
+    <div class="row" *ngIf="(price | async) !== null">
+      <div class="col-sm-3">Cost:</div>
+      <div class="col-sm-9">{{ price | async | currency: 'USD' }}</div>
+    </div>
+    <ng-container *ngIf="towHitch | async as towHitch">
+      <ng-container *ngIf="towHitch.enabled">
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="includeTow">Tow hitch?</label>
+          </div>
+          <div class="col-sm-9">
+            <input id="includeTow" type="checkbox" autocomplete="off" formControlName="towHitch" />
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="yoke | async as yoke">
+      <ng-container *ngIf="yoke.enabled">
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="includeYoke">Yoke steering wheel?</label>
+          </div>
+          <div class="col-sm-9">
+            <input id="includeYoke" type="checkbox" autocomplete="off" formControlName="yoke" />
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <div class="row">
+      <div class="col-sm-12">
+        <ng-container *ngIf="image | async as image">
+          <app-image
+            [src]="image.src"
+            [width]="480"
+            [height]="320"
+            [maxWidth]="480"
+            [maxHeight]="320"
+            [alt]="image.alt"></app-image>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-container *ngIf="error | async as error">
+  <app-error-toast
+    title="Error"
+    [message]="error.message || ''"
+    button="Reload"
+    [onClick]="reload"></app-error-toast>
+</ng-container>
+
+<ng-template #loader>
+  <div class="spinner"></div>
+</ng-template>

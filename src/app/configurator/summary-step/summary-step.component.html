@@ -1,0 +1,91 @@
+<div class="container summary">
+  <div class="row">
+    <div class="col-sm-12">
+      <app-title>Step 3: Summary</app-title>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <h2 *ngIf="model | async as model">Your Tesla {{ model.description }}</h2>
+    </div>
+  </div>
+  <div class="row" *ngIf="config | async as config">
+    <div class="col-sm-8">
+      <div class="col-12-sm">
+        <span>{{ config.description }}</span>
+        <div>
+          <span>Range: {{ config.range }}</span>
+          <span> - </span>
+          <span>Max speed: {{ config.speed }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <span>{{ config.price | currency: 'USD' }}</span>
+    </div>
+  </div>
+  <div class="row" *ngIf="color | async as color">
+    <div class="col-sm-8">
+      <div class="col-12-sm">
+        <span>{{ color.description }}</span>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <span>{{ color.price | currency: 'USD' }}</span>
+    </div>
+  </div>
+  <ng-container *ngIf="towHitch | async as towHitch">
+    <div class="row" *ngIf="towHitch?.enabled">
+      <div class="col-sm-8">
+        <div class="col-12-sm">
+          <span>Tow Hitch Package</span>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <span>{{ towHitch.price | currency: 'USD' }}</span>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="yoke | async as yoke">
+    <div class="row" *ngIf="yoke?.enabled">
+      <div class="col-sm-8">
+        <div class="col-12-sm">
+          <!-- TODO Bold text -->
+          <span>Yoke steering wheel</span>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <span>{{ yoke.price | currency: 'USD' }}</span>
+      </div>
+    </div>
+  </ng-container>
+  <div class="row">
+    <div class="col-sm-8">
+      <span>Total cost</span>
+    </div>
+    <div class="col-sm-4">
+      <span>{{ total | async | currency: 'USD' }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <ng-container *ngIf="image | async as image">
+        <app-image
+          [src]="image.src"
+          [width]="480"
+          [height]="320"
+          [maxWidth]="480"
+          [maxHeight]="320"
+          [alt]="image.alt"></app-image>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="error | async as error">
+  <app-error-toast
+    title="Error"
+    [message]="error.message || ''"
+    button="Reload"
+    [onClick]="reload"></app-error-toast>
+</ng-container>

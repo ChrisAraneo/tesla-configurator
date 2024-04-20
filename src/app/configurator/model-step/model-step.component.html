@@ -1,0 +1,66 @@
+<form *ngIf="(loading | async) === false; else loader" [formGroup]="service.form">
+  <div class="container" *ngIf="models | async as models">
+    <div class="row">
+      <div class="col-sm-12">
+        <app-title>Step 1: Choose your model and color</app-title>
+      </div>
+    </div>
+    <div class="row" *ngIf="models.length">
+      <div class="col-sm-12">
+        <div class="input-group">
+          <label for="modelSelect">Model</label>
+          <select id="modelSelect" placeholder="Model" formControlName="model">
+            <option [ngValue]="null"></option>
+            <ng-container *ngFor="let model of models">
+              <option [ngValue]="model.code">
+                {{ model.description }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="colors | async as colors">
+      <div class="row" *ngIf="colors.length">
+        <div class="col-sm-12">
+          <div class="input-group">
+            <label for="colorSelect">Color</label>
+            <select id="colorSelect" placeholder="Color" formControlName="color">
+              <option [ngValue]="null"></option>
+              <ng-container *ngFor="let color of colors">
+                <option [ngValue]="color.code">
+                  {{ color.description }}
+                </option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="row">
+      <div class="col-sm-12">
+        <ng-container *ngIf="image | async as image">
+          <app-image
+            [src]="image.src"
+            [width]="480"
+            [height]="320"
+            [maxWidth]="480"
+            [maxHeight]="320"
+            [alt]="image.alt"></app-image>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-container *ngIf="error | async as error">
+  <app-error-toast
+    title="Error"
+    [message]="error.message || ''"
+    button="Reload"
+    [onClick]="reload"></app-error-toast>
+</ng-container>
+
+<ng-template #loader>
+  <div class="spinner"></div>
+</ng-template>

@@ -1,0 +1,24 @@
+<div class="card error">
+  <div class="row">
+    <div class="col-sm-12">
+      <app-title>
+        <span class="responsive-margin">{{ warning }}</span>
+        <span>{{ title }}</span>
+      </app-title>
+    </div>
+  </div>
+  <div class="row message">
+    <div class="col-sm-12">
+      <app-paragraph>
+        {{ message }}
+      </app-paragraph>
+    </div>
+  </div>
+  <div class="row" *ngIf="button">
+    <div class="col-sm-12">
+      <a href="#" class="button" (click)="$event.preventDefault(); onClick ? onClick() : null">{{
+        button
+      }}</a>
+    </div>
+  </div>
+</div>
