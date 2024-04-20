@@ -1,15 +1,9 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { isNull } from 'lodash';
-import { Options } from '../types/options.type';
 
-export function createExtraAvailableValidator(
-  options: Options | null,
-  key: 'towHitch' | 'yoke',
-): ValidatorFn {
+export function createExtraAvailableValidator(isAvailable: boolean): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const value: boolean | null = control.value;
-
-    if (value === null || (!isNull(options) && options[key].enabled)) {
+    if (isNull(control.value) || isAvailable) {
       return null;
     } else {
       return {

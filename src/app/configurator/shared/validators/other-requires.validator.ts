@@ -3,12 +3,12 @@ import { isNull } from 'lodash';
 
 export function createOthersRequiredValidator(otherControls: AbstractControl[]): ValidatorFn {
   return (): ValidationErrors | null => {
-    if (otherControls.findIndex((control: AbstractControl) => isNull(control.value)) >= 0) {
+    if (otherControls.map((control) => isNull(control.value)).findIndex((isNull) => isNull) >= 0) {
       return {
         'others-required': true,
       };
+    } else {
+      return null;
     }
-
-    return null;
   };
 }
