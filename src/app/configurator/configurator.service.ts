@@ -8,6 +8,7 @@ import {
   Subscription,
   catchError,
   combineLatest,
+  distinct,
   filter,
   first,
   map,
@@ -162,7 +163,7 @@ export class ConfiguratorService implements OnDestroy {
           yoke: null,
         });
 
-        this.router.navigateByUrl('');
+        this.router.navigateByUrl(''); // TODO
       }),
     );
   }
@@ -243,89 +244,96 @@ export class ConfiguratorService implements OnDestroy {
 
   private subscribeToModelControlValueChanges(): void {
     this.subscription.add(
-      this.form.controls['model'].valueChanges.subscribe((value: string | null) => {
-        this.form.controls['color'].patchValue(null);
-        this.form.controls['config'].patchValue(null);
-        this.form.controls['towHitch'].patchValue(null);
-        this.form.controls['yoke'].patchValue(null);
-
-        this._colors.next(
-          this._modelsData.getValue().find((item) => item.code === value)?.colors || [],
-        );
-      }),
-    );
-
-    this.subscription.add(
       this.form.controls['model'].valueChanges
         .pipe(
+          distinct(),
+          tap(() => {
+            this.form.controls['color'].patchValue(null);
+            this.form.controls['config'].patchValue(null);
+            this.form.controls['towHitch'].patchValue(null);
+            this.form.controls['yoke'].patchValue(null);
+          }),
           tap((modelCode: string | null) => {
             this._model.next(
               this._models.getValue()?.find((model) => model.code === modelCode) || null,
             );
           }),
+          tap((modelCode: string | null) => {
+            this._colors.next(
+              this._modelsData.getValue().find((item) => item.code === modelCode)?.colors || [],
+            );
+          }),
           mergeMap((modelCode: string | null) => this.fetchOptionsData(modelCode)),
+          tap((data: ProcessedOptionsApiData | null) => {
+            this._optionsData.next(data);
+          }),
         )
-        .subscribe((result: ProcessedOptionsApiData | null) => this._optionsData.next(result)),
+        .subscribe(),
     );
   }
 
   private subscribeToColorControlValueChanges(): void {
     this.subscription.add(
-      this.form.controls['color'].valueChanges.subscribe((colorCode: string | null) => {
-        if (colorCode === null) {
-          this._color.next(null);
-        } else {
-          const model: (Model & { colors: Color[] }) | undefined = this._modelsData
-            .getValue()
-            .find((item) => item.code === this._model.getValue()?.code);
-          const color: Color | null = model?.colors.find((item) => item.code === colorCode) || null;
+      this.form.controls['color'].valueChanges
+        .pipe(distinct())
+        .subscribe((colorCode: string | null) => {
+          if (colorCode === null) {
+            this._color.next(null);
+          } else {
+            const model: (Model & { colors: Color[] }) | undefined = this._modelsData
+              .getValue()
+              .find((item) => item.code === this._model.getValue()?.code);
+            const color: Color | null =
+              model?.colors.find((item) => item.code === colorCode) || null;
 
-          this._color.next(color);
-        }
-      }),
+            this._color.next(color);
+          }
+        }),
     );
   }
 
   private subscribeToConfigControlValueChanges(): void {
     this.subscription.add(
-      this.form.controls['config'].valueChanges.subscribe((configId: string | null) => {
-        this.form.controls['towHitch'].patchValue(null);
-        this.form.controls['yoke'].patchValue(null);
+      this.form.controls['config'].valueChanges
+        .pipe(distinct())
+        .subscribe((configId: string | null) => {
+          this.form.controls['towHitch'].patchValue(null);
+          this.form.controls['yoke'].patchValue(null);
 
-        if (!configId) {
-          this._range.next(null);
-          this._maxSpeed.next(null);
-          this._price.next(null);
-          this._towHitch.next(null);
-          this._yoke.next(null);
-          this._config.next(null);
-        } else {
-          const options: ProcessedOptionsApiData | null = this._optionsData.getValue();
-          const config: Config | undefined = (options?.configs || []).find(
-            (config) => config.id === +configId,
-          );
-
-          if (config) {
-            this._config.next(config);
-
-            this._range.next(config.range);
-            this._maxSpeed.next(config.speed);
-            this._price.next(config.price);
-            this._towHitch.next(options?.towHitch || null);
-            this._yoke.next(options?.yoke || null);
-
-            if (options?.towHitch?.enabled === false) {
-              this.form.controls['towHitch'].patchValue(false);
-            }
-
-            if (options?.yoke?.enabled === false) {
-              this.form.controls['yoke'].patchValue(false);
-            }
+          if (!configId) {
+            this._range.next(null);
+            this._maxSpeed.next(null);
+            this._price.next(null);
+            this._towHitch.next(null);
+            this._yoke.next(null);
+            this._config.next(null);
           } else {
-            throw Error('Config not found');
+            const options: ProcessedOptionsApiData | null = this._optionsData.getValue();
+            const config: Config | undefined = (options?.configs || []).find(
+              (config) => config.id === +configId,
+            );
+
+            if (config) {
+              this._config.next(config);
+
+              this._range.next(config.range);
+              this._maxSpeed.next(config.speed);
+              this._price.next(config.price);
+              this._towHitch.next(options?.towHitch || null);
+              this._yoke.next(options?.yoke || null);
+
+              if (options?.towHitch?.enabled === false) {
+                this.form.controls['towHitch'].patchValue(false);
+              }
+
+              if (options?.yoke?.enabled === false) {
+                this.form.controls['yoke'].patchValue(false);
+              }
+            } else {
+              throw Error('Config not found');
+            }
           }
-        }
-      }),
+        }),
     );
   }
 
