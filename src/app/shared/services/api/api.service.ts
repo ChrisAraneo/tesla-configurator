@@ -58,7 +58,7 @@ export class ApiService {
                 price: this.fixedTowPrice,
               },
               yoke: {
-                enabled: response.towHitch,
+                enabled: response.yoke,
                 price: this.fixedYokePrice,
               },
             },
